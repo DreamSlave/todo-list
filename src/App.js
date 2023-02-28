@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import './assets/App.module.css';
-import styles from './assets/App.module.css'
-import First from "./First";
-import Task from "./Task";
-import Main from "./Main"; //모듈 스타일 import
+import './assets/css/App.module.css';
+import styles from './assets/css/App.module.css'
+import First from "./views/First";
+import Task from "./views/Task";
+import Main from "./views/Main"; //모듈 스타일 import
 
 
 function App() {

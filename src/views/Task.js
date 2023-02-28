@@ -1,5 +1,5 @@
 import React from "react";
-import styles from './Task.module.css'
+import styles from '../assets/css/Task.module.css'
 
 
 function Task() {
