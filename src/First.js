@@ -1,6 +1,7 @@
 import React from "react";
-import './App.module.css';
-import styles from './App.module.css' //모듈 스타일 import
+import './assets/App.module.css';
+import styles from './assets/App.module.css'
+import Header from "./Header";
 
 
 function First() {
@@ -9,9 +10,7 @@ function First() {
         <div className={styles['frame0']}>
           <div className={styles['group16']}>
             <div className={styles['navi']}>
-            <span className={styles['text']}>
-              <span>꿈을 기록해보세요!</span>
-            </span>
+              <Header />
             </div>
           </div>
           <div className={styles['frame1']}>
@@ -39,9 +38,7 @@ function First() {
           <span>첫번째 할 일을 기록해보세요!</span>
         </span>
           <div className={styles['empty']}>
-          <span className={styles['text10']}>
-            <span>입장하기</span>
-          </span>
+            <button>입장하기</button>
           </div>
         </div>
       </div>

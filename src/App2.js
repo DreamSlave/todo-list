@@ -1,6 +1,6 @@
 import React from "react";
-import './App.module.css';
-import styles from './App.module.css' //모듈 스타일 import
+import './assets/App.module.css';
+import styles from './assets/App.module.css' //모듈 스타일 import
 
 
 function App() {

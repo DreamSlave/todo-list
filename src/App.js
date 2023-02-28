@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import './App.module.css';
-import styles from './App.module.css'
+import './assets/App.module.css';
+import styles from './assets/App.module.css'
 import First from "./First";
 import Task from "./Task";
 import Main from "./Main"; //모듈 스타일 import
