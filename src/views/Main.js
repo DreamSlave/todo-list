@@ -1,5 +1,5 @@
 import React from "react";
-import styles from './assets/Main.module.css'
+import styles from '../assets/css/Main.module.css'
 
 function Main() {
   return (
@@ -15,181 +15,10 @@ function Main() {
                     <span className={styles['text01']}>+</span>
                 </div>
                 <div className={styles['frame1']}>
-                    <div className={styles['framecontainer']}>
-                        <div className={styles['frameframe']}>
-                            <div className={styles['frame01']}>
-                                <img
-                                    alt="edit13218"
-                                    src="/playground_assets/edit13218-9ibd-200h.png"
-                                    className={styles['edit1']}
-                                />
-                                <img
-                                    alt="close13218"
-                                    src="/playground_assets/close13218-4857-200h.png"
-                                    className={styles['close1']}
-                                />
-                            </div>
-                        </div>
-                        <div className={styles['frame02']}>
-                            <div className={styles['frame03']}>
-                                <div className={styles['frame04']}>
-            <span className={styles['text02']}>
-              <span>연구개발보고서 쓰기...</span>
-            </span>
-                                </div>
-                                <div className={styles['frame05']}>
-            <span className={styles['text04']}>
-              <span>2021.09.24</span>
-            </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={styles['frame06']}>
-                            <div className={styles['frame07']}>
-          <span className={styles['text06']}>
-            <span>중요한 Task로써 열심히 해야합ㄴ디ㅏ.</span>
-          </span>
-                            </div>
-                        </div>
-                        <div className={styles['frame08']}>
-                            <img
-                                alt="fire13235"
-                                src="/playground_assets/fire13235-3abq-200w.png"
-                                className={styles['fire1']}
-                            />
-                            <div className={styles['tag']}>
-          <span className={styles['text08']}>
-            <span>뷰티</span>
-          </span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div className={styles['frame2']}>
-                    <div className={styles['framecontainer1']}>
-                        <div className={styles['frameframe1']}>
-                            <div className={styles['frame-state']}>
-                                <img
-                                    alt="Ellipse73218"
-                                    src="/playground_assets/ellipse73218-ypf-200h.png"
-                                    className={styles['ellipse71']}
-                                />
-                                <img
-                                    alt="Ellipse83218"
-                                    src="/playground_assets/ellipse83218-71zc-200h.png"
-                                    className={styles['ellipse81']}
-                                />
-                                <img
-                                    alt="Ellipse93218"
-                                    src="/playground_assets/ellipse93218-iy6u-200h.png"
-                                    className={styles['ellipse91']}
-                                />
-                            </div>
-                            <div className={styles['frame-button']}>
-                                <img
-                                    alt="edit13218"
-                                    src="/playground_assets/edit13218-9ibd-200h.png"
-                                    className={styles['edit11']}
-                                />
-                                <img
-                                    alt="close13218"
-                                    src="/playground_assets/close13218-4857-200h.png"
-                                    className={styles['close11']}
-                                />
-                            </div>
-                        </div>
-                        <div className={styles['frame09']}>
-                            <div className={styles['frame10']}>
-                                <div>
-            <span className={styles['text10']}>
-              <span>연구개발보고서 쓰기...</span>
-            </span>
-                                </div>
-                                <div className={styles['frame12']}>
-            <span className={styles['text12']}>
-              <span>2021.09.24</span>
-            </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={styles['frame13']}>
-                            <div className={styles['frame14']}>
-          <span className={styles['text14']}>
-            <span>중요한 Task로써 열심히 해야합ㄴ디ㅏ.</span>
-          </span>
-                            </div>
-                        </div>
-                        <div className={styles['frame15']}>
-                            <img
-                                alt="fire13235"
-                                src="/playground_assets/fire13235-3abq-200w.png"
-                                className={styles['fire11']}
-                            />
-                        </div>
-                    </div>
                 </div>
                 <div className={styles['frame3']}>
-                    <div className={styles['framecontainer2']}>
-                        <div className={styles['frameframe2']}>
-                            <div className={styles['frame16']}>
-                                <img
-                                    alt="Ellipse73218"
-                                    src="/playground_assets/ellipse73218-ypf-200h.png"
-                                    className={styles['ellipse72']}
-                                />
-                                <img
-                                    alt="Ellipse83218"
-                                    src="/playground_assets/ellipse83218-71zc-200h.png"
-                                    className={styles['ellipse82']}
-                                />
-                                <img
-                                    alt="Ellipse93218"
-                                    src="/playground_assets/ellipse93218-iy6u-200h.png"
-                                    className={styles['ellipse92']}
-                                />
-                            </div>
-                            <div className={styles['frame17']}>
-                                <img
-                                    alt="edit13218"
-                                    src="/playground_assets/edit13218-9ibd-200h.png"
-                                    className={styles['edit12']}
-                                />
-                                <img
-                                    alt="close13218"
-                                    src="/playground_assets/close13218-4857-200h.png"
-                                    className={styles['close12']}
-                                />
-                            </div>
-                        </div>
-                        <div className={styles['frame18']}>
-                            <div className={styles['frame19']}>
-                                <div className={styles['frame20']}>
-            <span className={styles['text16']}>
-              <span>연구개발보고서 쓰기...</span>
-            </span>
-                                </div>
-                                <div>
-            <span className={styles['text18']}>
-              <span>2021.09.24</span>
-            </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={styles['frame22']}>
-                            <div className={styles['frame23']}>
-          <span className={styles['text20']}>
-            <span>중요한 Task로써 열심히 해야합ㄴ디ㅏ.</span>
-          </span>
-                            </div>
-                        </div>
-                        <div className={styles['frame24']}>
-                            <img
-                                alt="fire13235"
-                                src="/playground_assets/fire13235-3abq-200w.png"
-                                className={styles['fire12']}
-                            />
-                        </div>
-                    </div>
                 </div>
             </div>
             <div className={styles['search']}>
@@ -199,7 +28,7 @@ function Main() {
                             <div className={styles['frame25']}>
                                 <img
                                     alt="Searchicon1251"
-                                    src="/playground_assets/searchicon1251-pj.svg"
+                                    src="/assets/imgs/searchicon1251-pj.svg"
                                     className={styles['searchicon']}
                                 />
                             </div>
