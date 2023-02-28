@@ -14,7 +14,7 @@ function First() {
             </span>
             </div>
           </div>
-          <div className={styles['frame1']} className={styles['frame1']}>
+          <div className={styles['frame1']}>
             <div className={styles['frame']}>
               <div>
               <span className={styles['text02']}>
