@@ -1,0 +1,7 @@
+.no-border {
+    font-size: 24px;
+    border: none;
+}
+.no-border:focus{
+    outline : none;
+}
