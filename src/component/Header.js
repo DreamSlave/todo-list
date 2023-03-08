@@ -1,4 +1,4 @@
-import HeaderStyles from './assets/Header.module.css'
+import HeaderStyles from '../assets/css/Header.module.css'
 
 function Header() {
     return (

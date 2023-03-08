@@ -1,7 +1,7 @@
 import React from "react";
-import './assets/App.module.css';
-import styles from './assets/App.module.css'
-import Header from "./Header";
+import '../assets/css/App.module.css';
+import styles from '../assets/css/App.module.css'
+import Header from "../component/Header";
 
 
 function First() {
