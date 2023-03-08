@@ -1,5 +1,11 @@
 import React from "react";
 import styles from '../assets/css/Task.module.css'
+import StatusTodoImg from '../assets/imgs/ellipse73218-ypf-200h.png'
+import StatusDoingImg from '../assets/imgs/ellipse83218-71zc-200h.png'
+import StatusDoneImg from '../assets/imgs/ellipse93218-iy6u-200h.png'
+import EditButtonImg from  '../assets/imgs/edit13218-9ibd-200h.png'
+import EndEditButtonImg from '../assets/imgs/close13218-4857-200h.png'
+import ImportantFlagImg from '../assets/imgs/fire13235-3abq-200w.png'
 
 
 function Task() {
@@ -10,29 +16,29 @@ function Task() {
           <div className={styles['frame-state']}>
             <img
                 alt="Ellipse73218"
-                src="/playground_assets/ellipse73218-ypf-200h.png"
+                src={StatusTodoImg}
                 className={styles['ellipse71']}
             />
             <img
                 alt="Ellipse83218"
-                src="/playground_assets/ellipse83218-71zc-200h.png"
+                src={StatusDoingImg}
                 className={styles['ellipse81']}
             />
             <img
                 alt="Ellipse93218"
-                src="/playground_assets/ellipse93218-iy6u-200h.png"
+                src={StatusDoneImg}
                 className={styles['ellipse91']}
             />
           </div>
           <div className={styles['frame-button']}>
             <img
                 alt="edit13218"
-                src="/playground_assets/edit13218-9ibd-200h.png"
+                src={EditButtonImg}
                 className={styles['edit11']}
             />
             <img
                 alt="close13218"
-                src="/playground_assets/close13218-4857-200h.png"
+                src={EndEditButtonImg}
                 className={styles['close11']}
             />
           </div>
@@ -61,7 +67,7 @@ function Task() {
         <div className={styles['frame15']}>
           <img
               alt="fire13235"
-              src="/playground_assets/fire13235-3abq-200w.png"
+              src={ImportantFlagImg}
               className={styles['fire11']}
           />
         </div>
