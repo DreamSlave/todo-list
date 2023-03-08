@@ -4,7 +4,7 @@ import styles from './Task.module.css'
 
 function Task() {
   return (
-    <div className={styles['frame2']}>
+    <div className="org pd10 {styles['frame2']}">
       <div className={styles['framecontainer1']}>
         <div className={styles['frameframe1']}>
           <div className={styles['frame-state']}>
