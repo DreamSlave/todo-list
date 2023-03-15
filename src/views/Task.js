@@ -7,9 +7,50 @@ import EditButtonImg from  '../assets/imgs/edit13218-9ibd-200h.png'
 import EndEditButtonImg from '../assets/imgs/close13218-4857-200h.png'
 import ImportantFlagImg from '../assets/imgs/fire13235-3abq-200w.png'
 
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography'
+
+
+const bull = (
+  <Box
+    component="span"
+    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
+  >
+    •
+  </Box>
+);
 
 function Task() {
+  
   return (
+    <Card sx={{ width: 427, height: 257}}>
+      <CardContent sx={{ width: 200 }}>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Word of the Day
+        </Typography>
+        <Typography variant="h5" component="div">
+          be{bull}nev{bull}o{bull}lent
+        </Typography>
+        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+          adjective
+        </Typography>
+        <Typography variant="body2">
+          well meaning and kindly.
+          <br />
+          {'"a benevolent smile"'}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small">Learn More</Button>
+      </CardActions>
+    </Card>
+  );
+
+  /* return (
     <div className="org pd10 {styles['frame2']}">
       <div className={styles['framecontainer1']}>
         <div className={styles['frameframe1']}>
@@ -73,7 +114,7 @@ function Task() {
         </div>
       </div>
     </div>
-  );
+  ); */
 }
 
 export default Task;
