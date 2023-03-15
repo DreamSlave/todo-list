@@ -1,12 +1,14 @@
-.container1 {
+body {
   width: 100%;
-  height: 1024px;
-  display: flex;
-  overflow: hidden;
-  position: relative;
-  align-items: flex-start;
+  height: 100%;
+}
+.container1 {
+  top: 111px;
+  position: absolute;
   flex-shrink: 0;
   border-color: transparent;
+  flex-direction: row-reverse;
+  justify-content: space-around;
   background-color: rgba(225, 225, 225, 1);
 }
 .header {
@@ -37,7 +39,6 @@
   line-height: 26px;
 }
 .main-task-list {
-  top: 120px;
   left: 32px;
   width: 90%;
   height: 300px;
@@ -727,25 +728,27 @@
   border-color: transparent;
 }
 .search {
-  top: 555px;
+  top : 300px;
+  position: absolute;
   left: 4px;
   width: 724px;
-  height: 46px;
-  display: flex;
+  height: 100px;
   position: absolute;
-  align-items: flex-start;
   flex-shrink: 0;
   border-color: transparent;
+  align-items:stretch;
+  display: flex;
+  flex-direction: column;
 }
 .search1 {
   top: 0px;
-  left: 0px;
+  left: 31px;
   width: 724px;
   display: flex;
   padding: 0 0 0 50px;
-  position: absolute;
   align-items: center;
   flex-shrink: 0;
+
   border-color: transparent;
 }
 .searchbar {
@@ -812,13 +815,13 @@
   text-decoration: none;
 }
 .search-tag {
-  flex: 1;
   left: 50px;
-  width: 280px;
-  bottom: -59px;
+  width: 500px;
   height: 31px;
+  padding: 10px 0 0 80px;
+  justify-content:space-around;
+
   display: flex;
-  position: absolute;
 }
 .tag1 {
   top: 0px;
@@ -949,7 +952,8 @@
   text-decoration: none;
 }
 .task-list {
-  top: 663px;
+  top: 400px;
+  position: absolute;
   left: 32px;
   width: 1410px;
   height: 339px;
