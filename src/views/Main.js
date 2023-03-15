@@ -1,6 +1,7 @@
 import React from "react";
 import styles from '../assets/css/Main.module.css'
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 
 function Main() {
   return (
@@ -32,10 +33,11 @@ function Main() {
             <Button variant="contained">Contained</Button>
           </div>
           <div className={styles['search-tag']}>
-            <Button variant="contained">Contained</Button>
-            <Button variant="contained">Contained</Button>
-            <Button variant="contained">Contained</Button>
-            <Button variant="contained">Contained</Button>
+            <Chip label="Chip Filled" />
+            <Chip label="Chip Outlined" variant="outlined" />
+            <Chip label="Chip Filled" />
+            <Chip label="Chip Outlined" variant="outlined" />
+            <Chip label="Chip Outlined" variant="outlined" />
           </div>
       </div>
       <div className={styles['task-list']}>
