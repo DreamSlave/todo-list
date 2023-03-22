@@ -1,14 +1,12 @@
-body {
-  width: 100%;
-  height: 100%;
-}
 .container1 {
-  top: 111px;
-  position: absolute;
+  width: 100%;
+  height: 1024px;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  align-items: flex-start;
   flex-shrink: 0;
   border-color: transparent;
-  flex-direction: row-reverse;
-  justify-content: space-around;
   background-color: rgba(225, 225, 225, 1);
 }
 .header {
@@ -39,6 +37,7 @@ body {
   line-height: 26px;
 }
 .main-task-list {
+  top: 120px;
   left: 32px;
   width: 90%;
   height: 300px;
@@ -728,27 +727,25 @@ body {
   border-color: transparent;
 }
 .search {
-  top : 300px;
-  position: absolute;
+  top: 555px;
   left: 4px;
   width: 724px;
-  height: 100px;
+  height: 46px;
+  display: flex;
   position: absolute;
+  align-items: flex-start;
   flex-shrink: 0;
   border-color: transparent;
-  align-items:stretch;
-  display: flex;
-  flex-direction: column;
 }
 .search1 {
   top: 0px;
-  left: 31px;
+  left: 0px;
   width: 724px;
   display: flex;
   padding: 0 0 0 50px;
+  position: absolute;
   align-items: center;
   flex-shrink: 0;
-
   border-color: transparent;
 }
 .searchbar {
@@ -815,13 +812,13 @@ body {
   text-decoration: none;
 }
 .search-tag {
+  flex: 1;
   left: 50px;
-  width: 500px;
+  width: 280px;
+  bottom: -59px;
   height: 31px;
-  padding: 10px 0 0 80px;
-  justify-content:space-around;
-
   display: flex;
+  position: absolute;
 }
 .tag1 {
   top: 0px;
@@ -952,8 +949,7 @@ body {
   text-decoration: none;
 }
 .task-list {
-  top: 400px;
-  position: absolute;
+  top: 663px;
   left: 32px;
   width: 1410px;
   height: 339px;
