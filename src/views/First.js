@@ -16,30 +16,22 @@ function First() {
               <Header />
             </div>
           </div>
-          <div className={'w40 center '}>
-            <span className={'font60 ' + firstStyles['fit']}>첫번째 할 일을 기록해보세요!</span>
-            <Card sx={{ width : '100px' }}>
-              <div className={'light_yellow '}>
-                <div className={'pd25 '}>
-                  <div>
-                  <span className={styles['text02']}>
-                    <input className={HeaderStyles['no-border']}
-                           style={{ backgroundColor:'transparent' }}
-                           placeholder={'해야할 일을 입력해보세요.'}/>
-                  </span>
-                  </div>
+          <div className={'w50 center '}>
+            <span className={'font60 pdb10' + firstStyles['fit']}>첫번째 할 일을 기록해보세요!</span>
+            <Card sx={{ width : '100%', marginTop : '10px' }}>
+              <div className={'light_yellow pd30'}>
+                <div className={'pdt20'}>
+                  <input className={HeaderStyles['no-border']}
+                         style={{ backgroundColor:'transparent', width : '100%' }}
+                         placeholder={'해야할 일을 입력해보세요.'}/>
                 </div>
-                <div className={styles['frame2']}>
-                {/*<span className={styles['text04']}>*/}
-                {/*  <span>비고를 입력해보세요.</span>*/}
-                {/*</span>*/}
+                <div className={'pdt10'}>
+                  <textarea className={'w100 '+HeaderStyles['no-border']}
+                            style={{ backgroundColor:'transparent', height : '300px', fontSize : '18px', resize : 'none' }}
+                            placeholder={'비고를 입력해보세요.'}/>
                 </div>
                 <div className={styles['frame3']}>
-                  {/*<div className={styles['tag']}>*/}
-                  {/*<span className={styles['text06']}>*/}
-                  {/*  <span>카테고리를 입력해보세요.</span>*/}
-                  {/*</span>*/}
-                  {/*</div>*/}
+
                 </div>
               </div>
             </Card>
