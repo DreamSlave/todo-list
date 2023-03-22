@@ -3,6 +3,8 @@ import styles from '../assets/css/Main.module.css'
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
 import SearchIconPath from '../assets/imgs/searchicon1251-pj.svg'
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 
 function Main() {
   return (
@@ -13,6 +15,9 @@ function Main() {
                     <span >진미님 힘내세요</span>
                 </div>
             </div>
+            <Container fixed>
+                <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }} />
+            </Container>
             <div className={styles['main-task-list']}>
                 <div className={styles['empty']}>
                     <span className={styles['text01']}>+</span>
