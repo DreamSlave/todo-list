@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "@material-ui/core/Card";
+import Card from "@mui/material/Card";
 import '../assets/css/App.css';
 import styles from '../assets/css/App.module.css'
 import firstStyles from '../assets/css/First.module.css'
