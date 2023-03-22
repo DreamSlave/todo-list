@@ -14,6 +14,8 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography'
 
+import Brightness1Icon from '@mui/icons-material/Brightness1';
+
 
 const bull = (
   <Box
@@ -27,9 +29,88 @@ const bull = (
 function Task() {
   
   return (
-    <Card sx={{ width: 427, height: 257}}>
-      <CardContent sx={{ width: 200 }}>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+    <Card sx={{ width: 427, height: 252 }}>
+      <CardContent>
+        <div className={styles['frame-state']}>
+          <Brightness1Icon sx={{ color: "gray" }} />
+          <img
+              alt="Ellipse73218"
+              src={StatusTodoImg}
+              className={styles['ellipse71']}
+          />
+          <img
+              alt="Ellipse83218"
+              src={StatusDoingImg}
+              className={styles['ellipse81']}
+          />
+          <img
+              alt="Ellipse93218"
+              src={StatusDoneImg}
+              className={styles['ellipse91']}
+          />
+        </div>
+        {/* <div className={styles['framecontainer1']} style={{ width: '100%' }}>
+          <div className={styles['frameframe1']}>
+            <div className={styles['frame-state']}>
+              <img
+                  alt="Ellipse73218"
+                  src={StatusTodoImg}
+                  className={styles['ellipse71']}
+              />
+              <img
+                  alt="Ellipse83218"
+                  src={StatusDoingImg}
+                  className={styles['ellipse81']}
+              />
+              <img
+                  alt="Ellipse93218"
+                  src={StatusDoneImg}
+                  className={styles['ellipse91']}
+              />
+            </div>
+            <div className={styles['frame-button']}>
+              <img
+                  alt="edit13218"
+                  src={EditButtonImg}
+                  className={styles['edit11']}
+              />
+              <img
+                  alt="close13218"
+                  src={EndEditButtonImg}
+                  className={styles['close11']}
+              />
+            </div>
+          </div>
+          <div className={styles['frame09']}>
+            <div className={styles['frame10']}>
+              <div>
+                <span className={styles['text10']}>
+                <span>연구개발보고서 쓰기...</span>
+                </span>
+              </div>
+              <div className={styles['frame12']}>
+                <span className={styles['text12']}>
+                <span>2021.09.24</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className={styles['frame13']}>
+            <div className={styles['frame14']}>
+              <span className={styles['text14']}>
+              <span>중요한 Task로써 열심히 해야합니다.</span>
+              </span>
+            </div>
+          </div>
+          <div className={styles['frame15']}>
+            <img
+                alt="fire13235"
+                src={ImportantFlagImg}
+                className={styles['fire11']}
+            />
+          </div>
+        </div> */}
+        {/* <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Word of the Day
         </Typography>
         <Typography variant="h5" component="div">
@@ -42,7 +123,7 @@ function Task() {
           well meaning and kindly.
           <br />
           {'"a benevolent smile"'}
-        </Typography>
+        </Typography> */}
       </CardContent>
       <CardActions>
         <Button size="small">Learn More</Button>
