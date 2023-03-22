@@ -6,6 +6,8 @@ import StatusDoneImg from '../assets/imgs/ellipse93218-iy6u-200h.png'
 import EditButtonImg from  '../assets/imgs/edit13218-9ibd-200h.png'
 import EndEditButtonImg from '../assets/imgs/close13218-4857-200h.png'
 import ImportantFlagImg from '../assets/imgs/fire13235-3abq-200w.png'
+import TaskEditImg from '../assets/imgs/edit_task.png'
+import TaskCloseImg from '../assets/imgs/close_task.png'
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -32,22 +34,21 @@ function Task() {
     <Card sx={{ width: 427, height: 252 }}>
       <CardContent>
         <div className={styles['frame-state']}>
-          <Brightness1Icon sx={{ color: "gray" }} />
-          <img
-              alt="Ellipse73218"
-              src={StatusTodoImg}
-              className={styles['ellipse71']}
-          />
-          <img
-              alt="Ellipse83218"
-              src={StatusDoingImg}
-              className={styles['ellipse81']}
-          />
-          <img
-              alt="Ellipse93218"
-              src={StatusDoneImg}
-              className={styles['ellipse91']}
-          />
+          <Brightness1Icon sx={{ color: "#FFFFFF", fontSize: 30 }} />
+          <Brightness1Icon sx={{ color: "#2400FF", fontSize: 30 }} />
+          <Brightness1Icon sx={{ color: "#787878", fontSize: 30 }} />
+          <div className={styles['frame-state']}>
+            <img
+                alt="Ellipse73218"
+                src={StatusTodoImg}
+                className={styles['ellipse71']}
+            />
+            <img
+                alt="Ellipse83218"
+                src={StatusDoingImg}
+                className={styles['ellipse81']}
+            />
+          </div>
         </div>
         {/* <div className={styles['framecontainer1']} style={{ width: '100%' }}>
           <div className={styles['frameframe1']}>
