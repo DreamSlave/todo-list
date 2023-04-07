@@ -1,11 +1,15 @@
 import React from "react";
 import styles from '../assets/css/Main.module.css'
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import SearchIconPath from '../assets/imgs/searchicon1251-pj.svg'
-import TextField from '@mui/material/TextField';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
+import { Container, InputAdornment, TextField, Button, Chip, Box} from "@mui/material";
+import { useState } from "react";
+import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from '@mui/icons-material/Add';
+import { makeStyles } from "@material-ui/core/styles";
+const useStyles = makeStyles({
+    text: {
+        "vertical-align": "middle",
+    },
+});
 
 function Main() {
   return (
@@ -13,30 +17,10 @@ function Main() {
         <Container>
             <Box sx={{ bgcolor: '#FFFFFF', height:84, maxWidth:1376 }} >
             </Box>
-            <Box sx={{ bgcolor: '#FEE08A', height:304, maxWidth:1376 }} >
-            </Box>
-            <Search>
-                검색영역
-            </Search>
-            <SearchTag></SearchTag>
-            <Box sx={{ bgcolor: 'rgba(254, 224, 138, 0.10000000149011612)', height:304, maxWidth:1376 }} >
-            </Box>
-
-            {/*    <div className={styles['search']}>*/}
-            {/*        <div className={styles['search1']}>*/}
-            {/*            <div className={styles['searchbar']}>*/}
-            {/*                <div className={styles['searchbar1']}>*/}
-            {/*                    <div className={styles['frame25']}>*/}
-            {/*                        <img*/}
-            {/*                            src={SearchIconPath}*/}
-            {/*                            className={styles['searchicon']}*/}
-            {/*                        />*/}
-            {/*                    </div>*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*            <Button variant="contained">Contained</Button>*/}
-            {/*        </div>*/}
-
+            <TaskList></TaskList>
+            <SearchBar>
+            </SearchBar>
+            <TaskList></TaskList>
         </Container>
         {/*<div className={styles['container1']}>*/}
         {/*    <div className={styles['header']}>*/}
@@ -282,45 +266,10 @@ function Main() {
   );
 }
 
-function Search(){
-    return (
-        <Box
-            sx={{
-                height: 46,
-                backgroundColor: 'primary.dark',
-            }}
-        >
-            <TextField id="standard-basic" label="Standard" variant="standard" />
-        </Box>
-    );
-
-    // <div className={styles['search']}>
-    //     <div className={styles['search1']}>
-    //         <div className={styles['searchbar']}>
-    //             <div className={styles['searchbar1']}>
-    //                 <div className={styles['frame25']}>
-    //                     <img
-    //                         src={SearchIconPath}
-    //                         className={styles['searchicon']}
-    //                     />
-    //                 </div>
-    //             </div>
-    //         </div>
-    //         <Button variant="contained">Contained</Button>
-    //     </div>
-    //     <div className={styles['search-tag']}>
-    //         <Chip label="Chip Filled" />
-    //         <Chip label="Chip Outlined" variant="outlined" />
-    //         <Chip label="Chip Filled" />
-    //         <Chip label="Chip Outlined" variant="outlined" />
-    //         <Chip label="Chip Outlined" variant="outlined" />
-    //     </div>
-    // </div>
-
-}
 function SearchTag(){
     return (
         <Box
+            p={2}
             sx={{
                 height: 31,
             }}
@@ -332,30 +281,45 @@ function SearchTag(){
         <Chip label="Chip Outlined" variant="outlined" />
         </Box>
     );
-
-    // <div className={styles['search']}>
-    //     <div className={styles['search1']}>
-    //         <div className={styles['searchbar']}>
-    //             <div className={styles['searchbar1']}>
-    //                 <div className={styles['frame25']}>
-    //                     <img
-    //                         src={SearchIconPath}
-    //                         className={styles['searchicon']}
-    //                     />
-    //                 </div>
-    //             </div>
-    //         </div>
-    //         <Button variant="contained">Contained</Button>
-    //     </div>
-    //     <div className={styles['search-tag']}>
-    //         <Chip label="Chip Filled" />
-    //         <Chip label="Chip Outlined" variant="outlined" />
-    //         <Chip label="Chip Filled" />
-    //         <Chip label="Chip Outlined" variant="outlined" />
-    //         <Chip label="Chip Outlined" variant="outlined" />
-    //     </div>
-    // </div>
-
 }
+function SearchBar() {
+    const [searchTerm, setSearchTerm] = useState("");
 
+    const handleChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    return (
+        <Container maxWidth="md" sx={{ m: 10 }}>
+            <TextField
+                id="search"
+                type="search"
+                label="Search"
+                value={searchTerm}
+                onChange={handleChange}
+                sx={{ width: 600 }}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <SearchIcon />
+                        </InputAdornment>
+                    ),
+                }}
+            />
+            <SearchTag></SearchTag>
+        </Container>
+    );
+}
+function TaskList() {
+    const classes = useStyles();
+    return (
+        <Container sx={{ m: 10 }}>
+            <Box sx={{ bgcolor: '#FEE09A', height:304, maxWidth:1376 }} >
+                <Box className={classes.text} >
+                    <AddIcon/>
+                </Box>
+            </Box>
+        </Container>
+    );
+}
 export default Main;
