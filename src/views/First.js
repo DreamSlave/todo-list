@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useState } from 'react';
 import Card from "@mui/material/Card";
 import '../assets/css/App.css';
 import styles from '../assets/css/App.module.css'
 import firstStyles from '../assets/css/First.module.css'
 import Header from "../component/Header";
 import HeaderStyles from "../assets/css/Header.module.css";
+import Chip from '@mui/material/Chip';
 
 
 function First() {
+
+  const [test, setBool] = useState(true);
+  const [categoryNm, setNm] = useState('');
+  function changeTest(bool){
+    setBool(bool)
+  }
+  function changeCategoryNm(nm){
+    setNm(nm)
+  }
+  function getLog() {
+    console.log("Hi there, user!");
+  }
   return (
       <div>
         <div className={styles['frame0']}>
@@ -31,6 +44,20 @@ function First() {
                             placeholder={'비고를 입력해보세요.'}/>
                 </div>
                 <div className={styles['frame3']}>
+                  <div onClick={()=>changeTest(false)} className={firstStyles['chip']}>{
+                    test ? <span className={firstStyles['chip']}> {categoryNm}</span>
+                        :(
+                            <span className={'w90 ' + firstStyles['chip']}>
+                              <input defaultValue={categoryNm}
+                                     onBlur={(e)=> {
+                                       changeTest(true)
+                                       changeCategoryNm(e.target.value)
+                                     }}
+                              />
+                            </span>
+                        )
+                  }
+                  </div>
 
                 </div>
               </div>
@@ -43,5 +70,4 @@ function First() {
       </div>
   );
 }
-
 export default First;
