@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     "justify-content":"space-around",
     "text-align": "center",
     "background-color":"#FEE09A",
-    "width":"1376px",
+    "width":"1600px",
     "height":"304px",
     "padding": 2,
   },
@@ -29,8 +29,8 @@ const useStyles = makeStyles({
 
 function Main() {
   return (
-    <Container>
-        <Box sx={{ bgcolor: '#FFFFFF', height:84, maxWidth:1376 }} >
+    <Container sx={{textAlign: 'center'}} maxWidth={false}>
+        <Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >
         </Box>
         <TaskList></TaskList>
         <SearchBar>
@@ -65,22 +65,23 @@ function SearchBar() {
 
     return (
         <Container maxWidth="md" sx={{ m: 10 }}>
-            <TextField
-                id="search"
-                type="search"
-                label="Search"
-                value={searchTerm}
-                onChange={handleChange}
-                sx={{ width: 600 }}
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <SearchIcon />
-                        </InputAdornment>
-                    ),
-                }}
-            />
-            <SearchTag></SearchTag>
+          <TextField
+              id="search"
+              type="search"
+              label="Search"
+              value={searchTerm}
+              onChange={handleChange}
+              sx={{ width: 600 }}
+              InputProps={{
+                  endAdornment: (
+                      <InputAdornment position="end">
+                          <SearchIcon />
+                      </InputAdornment>
+                  ),
+              }}
+          />
+          <Button variant="Search">Contained</Button>
+          <SearchTag></SearchTag>
         </Container>
     );
 }
