@@ -316,3 +316,23 @@
   margin-bottom: 0;
   text-decoration: none;
 }
+
+input {
+  border: none;
+  background: transparent;
+}
+input:focus{
+  outline : none;
+  background: transparent;
+}
+
+button{
+  border:none;
+  background: transparent;
+}
+
+button:hover{
+  border:none;
+  background: transparent;
+  cursor: pointer;
+}
