@@ -6,10 +6,12 @@ import firstStyles from '../assets/css/First.module.css'
 import Header from "../component/Header";
 import HeaderStyles from "../assets/css/Header.module.css";
 import Chip from '@mui/material/Chip';
-
+import ApiUtil from "../api/api.util";
+import ApiConfig from "../api/api.config";
 
 function First() {
 
+  ApiUtil.get(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}`)
   const [test, setBool] = useState(true);
   const [categoryNm, setNm] = useState('');
   function changeTest(bool){

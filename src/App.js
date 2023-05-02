@@ -6,7 +6,8 @@ import First from "./views/First";
 import Task from "./views/Task";
 import Main from "./views/Main"; //모듈 스타일 import
 
-
+import ApiUtil from "./api/api.util.js";
+ApiUtil.init()
 function App() {
   return (
       <div>
