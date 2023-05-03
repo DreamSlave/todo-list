@@ -1,4 +1,6 @@
 import * as React from 'react';
+// import { useState } from 'react/cjs/react.development'
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -11,6 +13,7 @@ import TaskEditImg from '../assets/imgs/edit_task.png'
 import TaskCloseImg from '../assets/imgs/close_task.png'
 import FireTaskImg from '../assets/imgs/fire_task.png'
 import styles from '../assets/css/Task.module.css'
+import { PropTypes } from 'prop-types';
 
 const bull = (
   <Box
@@ -22,7 +25,20 @@ const bull = (
 );
 
 
-export default function BasicCard() {
+function BasicCard({ taskInfo }) {
+  
+  const [mode, setMode] = useState('VIEW')
+  // const [taskInfo, setTaskInfo] = useState({})
+
+  console.log(`taskInfo ::: ${JSON.stringify(taskInfo)}`)
+
+  // TODO : Task info (Props)
+  // 아이디, 상태, 제목, 작성일, 컨텐츠, 카테고리, 중요도
+  
+  /* React.useEffect(() => {
+  }, []) */
+
+
   return (
     <Card sx={{ minWidth: 275, backgroundColor: '#297CA7' }}>
       <CardContent>
@@ -76,3 +92,20 @@ export default function BasicCard() {
     </Card>
   );
 }
+
+BasicCard.propTypes = {
+  taskInfo: PropTypes.object
+}
+BasicCard.defaultProps = {
+  taskInfo: {
+    taskId: 'ID0001',
+    status: '진행',
+    title: '제목입니다.',
+    registDt: '2023/04/17',
+    contents: '내용입니다. 내용입니다. 내용입니다.',
+    category: '회사업무',
+    importYn: 'N',
+  }
+}
+
+export default BasicCard
