@@ -4,28 +4,14 @@ import { Container, InputAdornment, TextField, Button, Chip, Box} from "@mui/mat
 import { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from '@mui/icons-material/Add';
-import { makeStyles } from "@material-ui/core/styles";
+import MainStyles from "../assets/css/Main.module.css";
 import Task from "./Task"
-const useStyles = makeStyles({
-  add: {
-    "vertical-align": "middle",
-    "text-align": "center",
-    "width":"36px",
-    "height":"252px",
-    "background-color":"#FD966B"
-  },
-  task: {
-    "display": "inline-flex",
-    "vertical-align": "middle",
-    "justify-content":"space-around",
-    "text-align": "center",
-    "background-color":"#FEE09A",
-    "width":"1600px",
-    "height":"304px",
-    "padding": 2,
-  },
-
-});
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 function Main() {
   return (
@@ -86,18 +72,32 @@ function SearchBar() {
     );
 }
 function TaskList() {
-    const classes = useStyles();
     return (
-        <Container sx={{ m: 10 }}>
-            <Box className={classes.task} >
-              <Box className={classes.add} >
-                <AddIcon/>
+          <Container sx={{ m: 10 }}>
+              <Box className={MainStyles['task']} >
+                <Box className={MainStyles['add']}>
+                  <AddIcon/>
+                </Box>
+                  <Swiper
+                      modules={[Navigation, Pagination]}
+                      slidesPerView={3}
+                      navigation={true}
+                      spaceBetween={10}
+                      pagination={{ clickable: true }}
+                      scrollbar={{ draggable: true }}
+                  >
+                    <SwiperSlide><Task/></SwiperSlide>
+                    <SwiperSlide><Task/></SwiperSlide>
+                    <SwiperSlide><Task/></SwiperSlide>
+                    <SwiperSlide><Task/></SwiperSlide>
+                    <SwiperSlide><Task/></SwiperSlide>
+
+                    <span slot="wrapper-start">start</span>
+                    <span slot="wrapper-end">end</span>
+                  </Swiper>
               </Box>
-              <Task/>
-              <Task/>
-              <Task/>
-            </Box>
-        </Container>
+          </Container>
     );
 }
 export default Main;
+
