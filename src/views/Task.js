@@ -14,6 +14,8 @@ import TaskCloseImg from '../assets/imgs/close_task.png'
 import FireTaskImg from '../assets/imgs/fire_task.png'
 import styles from '../assets/css/Task.module.css'
 import { PropTypes } from 'prop-types';
+import ButtonGroup from '@mui/material/ButtonGroup'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 const bull = (
   <Box
@@ -31,22 +33,74 @@ function BasicCard({ taskInfo }) {
   // const [taskInfo, setTaskInfo] = useState({})
 
   console.log(`taskInfo ::: ${JSON.stringify(taskInfo)}`)
-
-  // TODO : Task info (Props)
-  // 아이디, 상태, 제목, 작성일, 컨텐츠, 카테고리, 중요도
   
   /* React.useEffect(() => {
   }, []) */
+  const statusButtonBasicStyles = {
+    bgcolor: 'backgroud.paper',
+    borderColor: 'text.primary',
+    borderRadius: '50%',
+    m: 1,
+    border: 1,
+    width: '1.5rem',
+    height: '1.5rem'
+  }
+
+  const statusButtonTheme = createTheme({
+    palette: {
+      waiting: {
+        main: '#F5E8C0'
+      },
+      processing: {
+        main: '#297CA7'
+      },
+      complete: {
+        main: '#0C2426'
+      }
+    }
+  })
 
 
   return (
-    <Card sx={{ minWidth: 275, backgroundColor: '#297CA7' }}>
+    <Card sx={{ minWidth: 275, backgroundColor: (taskInfo.status === '대기' ? '#F5E8C0' : taskInfo.status === '진행' ? '#297CA7' : taskInfo.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
       <CardContent>
         {/* header */}
-        <Brightness1Icon sx={{ color: "#FFFFFF", fontSize: 30 }} />
-        <Brightness1Icon sx={{ color: "#2400FF", fontSize: 30 }} />
-        <Brightness1Icon sx={{ color: "#787878", fontSize: 30 }} />
-        <div className={styles['header-btn-wrap']}>
+        {/* <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'left',
+          '& > *': { m: 10 }
+        }}
+        > */}
+        <ThemeProvider theme={statusButtonTheme}>
+          <ButtonGroup variant="contained" size="medium" area-label="outlined button group">
+            <Button key="대기" color="waiting">대기</Button>
+            <Button key="진행" color="processing">진행</Button>
+            <Button key="완료" color="complete" sx={{ color: 'white' }}>완료</Button>
+          </ButtonGroup>
+          <ButtonGroup variant="text" size="medium" area-label="text button group" sx={{ textAlign: 'right', marginLeft: '1.5em' }}>
+            <Button key="editButton" color="waiting">
+              <img  alt="Ellipse73218"
+                    src={TaskEditImg}
+                    className={styles['ellipse71']}
+              />
+            </Button>
+            <Button key="deleteButton" color="complete">
+              <img  alt="Ellipse83218"
+                    src={TaskCloseImg}
+                    className={styles['ellipse81']}
+              />
+            </Button>
+          </ButtonGroup>
+        </ThemeProvider>
+        {/* </Box> */}
+        {/* <Box sx={{ ...statusButtonBasicStyles, bgcolor: '#F5E8C0' }} />
+        <Box sx={{ ...statusButtonBasicStyles, bgcolor: '#297CA7' }} />
+        <Box sx={{ ...statusButtonBasicStyles, bgcolor: '#0C2426' }} /> */}
+        {/* <Brightness1Icon sx={{ color: "#F5E8C0", fontSize: 30, border: 1, borderColor: 'black' }} />
+        <Brightness1Icon sx={{ color: "#297CA7", fontSize: 30, border: 1, borderColor: 'black'  }} />
+        <Brightness1Icon sx={{ color: "#0C2426", fontSize: 30, border: 1, borderColor: 'black'  }} /> */}
+        {/* <div className={styles['header-btn-wrap']}>
           <img
               alt="Ellipse73218"
               src={TaskEditImg}
@@ -57,37 +111,31 @@ function BasicCard({ taskInfo }) {
               src={TaskCloseImg}
               className={styles['ellipse81']}
           />
-        </div>
+        </div> */}
 
-        {/* <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Word of the Day
-        </Typography> */}
+        {/* body */}
         <Typography variant="h5" component="div">
           {/* be{bull}nev{bull}o{bull}lent */}
-          리액트 마스터하기
+          {taskInfo.title}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          2023.04.07
+          {taskInfo.registDt}
         </Typography>
         <Typography variant="body2">
-          1. 리액트로 프로그래밍하기 책 정독<br/>
-          2. vscode vs intellij 결정
+          {taskInfo.contents}
           <br />
-          {/* {'"a benevolent smile"'} */}
         </Typography>
       </CardContent>
+
+      {/* bottom */}
       <CardActions>
-        {/* <Button size="small">Learn More</Button> */}
-        <img
-            alt="Ellipse83218"
-            src={FireTaskImg}
-            className={styles['ellipse81']}
-        />
-        <Chip label="Chip Filled" />
-        <Chip label="Chip Outlined" variant="outlined" />
-        <Chip label="Chip Filled" />
-        <Chip label="Chip Outlined" variant="outlined" />
-        <Chip label="Chip Outlined" variant="outlined" />
+        {taskInfo.importYn === 'Y' && 
+          <img
+              alt="Ellipse83218"
+              src={FireTaskImg}
+              className={styles['ellipse81']}
+          />}
+        {taskInfo.category && <Chip label={taskInfo.category} variant="outlined" />}
       </CardActions>
     </Card>
   );
@@ -104,7 +152,7 @@ BasicCard.defaultProps = {
     registDt: '2023/04/17',
     contents: '내용입니다. 내용입니다. 내용입니다.',
     category: '회사업무',
-    importYn: 'N',
+    importYn: 'Y',
   }
 }
 
