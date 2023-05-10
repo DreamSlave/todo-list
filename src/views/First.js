@@ -11,14 +11,59 @@ import ApiConfig from "../api/api.config";
 
 function First() {
 
-  ApiUtil.get(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}`)
+  // feat : 노션 API get, post 샘플용 기능 추가
   const [test, setBool] = useState(true);
   const [categoryNm, setNm] = useState('');
   function changeTest(bool){
+    ApiUtil.get(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}`)
     setBool(bool)
   }
   function changeCategoryNm(nm){
     setNm(nm)
+  }
+  function saveTask(title, contents, status, category, importYn){
+    let params = {
+      parent : {
+        database_id: `${ApiConfig.mainDataBaseId}`
+      },
+      properties : {
+        title : {
+          title: [
+            {
+              text: {
+                content: "오늘..내할일.."
+              }
+            }
+          ]
+        },
+        contents : {
+          type: "rich_text",
+          rich_text : [
+            {
+              text: {
+                content : "아삭아삭 맛있어요22"
+              }
+            }
+          ]
+        },
+        status : {
+          select: {
+            name: "진행"
+          }
+        },
+        importYn : {
+          select: {
+            name: "N"
+          }
+        },
+        category : {
+          select: {
+            name: "운동"
+          }
+        },
+      }
+    }
+    ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params)
   }
   function getLog() {
     console.log("Hi there, user!");
@@ -66,7 +111,7 @@ function First() {
             </Card>
           </div>
           <div className={styles['empty']}>
-            <button className={'mgl20 mgr20 ' + styles['orange']}>입장하기</button>
+            <button className={'mgl20 mgr20 ' + styles['orange']} onClick={(e)=>saveTask()}>입장하기</button>
           </div>
         </div>
       </div>
