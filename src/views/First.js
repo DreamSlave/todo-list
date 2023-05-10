@@ -10,8 +10,7 @@ import ApiUtil from "../api/api.util";
 import ApiConfig from "../api/api.config";
 
 function First() {
-
-  // feat : 노션 API get, post 샘플용 기능 추가
+  
   const [test, setBool] = useState(true);
   const [categoryNm, setNm] = useState('');
   function changeTest(bool){
