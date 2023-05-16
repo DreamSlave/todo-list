@@ -8,19 +8,19 @@ import HeaderStyles from "../assets/css/Header.module.css";
 import Chip from '@mui/material/Chip';
 import ApiUtil from "../api/api.util";
 import ApiConfig from "../api/api.config";
+import { useNavigate } from "react-router-dom";
 
 function First() {
-  
-  const [test, setBool] = useState(true);
-  const [categoryNm, setNm] = useState('');
-  function changeTest(bool){
-    ApiUtil.get(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}`)
-    setBool(bool)
+  const movePage = useNavigate();
+  const [isActiveCategory, setIsActiveCategory] = useState(true);
+  const [category, setCategory] = useState('');
+  const [title, setTitle] = useState('');
+  const [contents, setContents] = useState('');
+
+  function goMain(){
+    movePage('/main');
   }
-  function changeCategoryNm(nm){
-    setNm(nm)
-  }
-  function saveTask(title, contents, status, category, importYn){
+  function saveTask(){
     let params = {
       parent : {
         database_id: `${ApiConfig.mainDataBaseId}`
@@ -30,7 +30,7 @@ function First() {
           title: [
             {
               text: {
-                content: "오늘..내할일.."
+                content: `${title}`
               }
             }
           ]
@@ -40,29 +40,35 @@ function First() {
           rich_text : [
             {
               text: {
-                content : "아삭아삭 맛있어요22"
+                content : `${contents}`
               }
             }
           ]
         },
         status : {
           select: {
-            name: "진행"
+            name: `대기`
           }
         },
         importYn : {
           select: {
-            name: "N"
+            name: `Y`
           }
         },
         category : {
           select: {
-            name: "운동"
+            name: `${category}`
           }
         },
       }
     }
-    ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params)
+    ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params).then(function (response){
+      if(response.status === 200){
+        goMain()
+      }else{
+        alert('저장실패')
+      }
+    })
   }
   function getLog() {
     console.log("Hi there, user!");
@@ -82,23 +88,35 @@ function First() {
                 <div className={'pdt20'}>
                   <input className={HeaderStyles['no-border']}
                          style={{ backgroundColor:'transparent', width : '100%' }}
+                         value={title}
+                         onChange={(e)=> {
+                           e.preventDefault();
+                           setTitle(e.target.value)
+                         }}
                          placeholder={'해야할 일을 입력해보세요.'}/>
                 </div>
                 <div className={'pdt10'}>
                   <textarea className={'w100 '+HeaderStyles['no-border']}
                             style={{ backgroundColor:'transparent', height : '300px', fontSize : '18px', resize : 'none' }}
+                            value={contents}
+                            onChange={(e)=> {
+                              e.preventDefault();
+                              setContents(e.target.value)
+                            }}
                             placeholder={'비고를 입력해보세요.'}/>
                 </div>
                 <div className={styles['frame3']}>
-                  <div onClick={()=>changeTest(false)} className={firstStyles['chip']}>{
-                    test ? <span className={firstStyles['chip']}> {categoryNm}</span>
+                  <div onClick={()=>setIsActiveCategory(true)} className={firstStyles['chip']}>{
+                    !isActiveCategory ? <span className={firstStyles['chip']}> {category}</span>
                         :(
                             <span className={'w90 ' + firstStyles['chip']}>
-                              <input defaultValue={categoryNm}
-                                     onBlur={(e)=> {
-                                       changeTest(true)
-                                       changeCategoryNm(e.target.value)
+                              <input value={category}
+                                     placeholder={'카테고리'}
+                                     onChange={(e)=> {
+                                       e.preventDefault();
+                                       setCategory(e.target.value)
                                      }}
+                                     onBlur={(e)=> setIsActiveCategory(false)}
                               />
                             </span>
                         )
