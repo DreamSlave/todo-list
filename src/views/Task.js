@@ -16,6 +16,8 @@ import styles from '../assets/css/Task.module.css'
 import { PropTypes } from 'prop-types';
 import ButtonGroup from '@mui/material/ButtonGroup'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import ApiUtil from "../api/api.util";
+import ApiConfig from "../api/api.config";
 
 const bull = (
   <Box
@@ -30,9 +32,8 @@ const bull = (
 function BasicCard({ taskInfo }) {
   
   const [mode, setMode] = useState('VIEW')
+  
   // const [taskInfo, setTaskInfo] = useState({})
-
-  console.log(`taskInfo ::: ${JSON.stringify(taskInfo)}`)
   
   /* React.useEffect(() => {
   }, []) */
@@ -60,6 +61,27 @@ function BasicCard({ taskInfo }) {
     }
   })
 
+  const changeStatus = function(e) {
+
+    let params = {
+      parent : {
+        database_id: `${ApiConfig.mainDataBaseId}`
+      },
+      properties : {
+        status: {
+          select: {
+            name: e.target.textContent,
+          }
+        },
+      }
+    }
+    ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${taskInfo.taskId}`, params).then(res => {
+      // console.log(`here ::: ${JSON.stringify(res)}`)
+      taskInfo.status = res.data.properties.status.select.name
+      console.log(`조회된 status ::: ${res.data.properties.status.select.name}`)
+    })
+  }
+
 
   return (
     <Card sx={{ minWidth: 275, backgroundColor: (taskInfo.status === '대기' ? '#F5E8C0' : taskInfo.status === '진행' ? '#297CA7' : taskInfo.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
@@ -72,11 +94,12 @@ function BasicCard({ taskInfo }) {
           '& > *': { m: 10 }
         }}
         > */}
+        {taskInfo.status}
         <ThemeProvider theme={statusButtonTheme}>
           <ButtonGroup variant="contained" size="medium" area-label="outlined button group">
-            <Button key="대기" color="waiting">대기</Button>
-            <Button key="진행" color="processing">진행</Button>
-            <Button key="완료" color="complete" sx={{ color: 'white' }}>완료</Button>
+            <Button key="대기" color="waiting" onClick={changeStatus}>대기</Button>
+            <Button key="진행" color="processing" onClick={changeStatus}>진행</Button>
+            <Button key="완료" color="complete" sx={{ color: 'white' }} onClick={changeStatus}>완료</Button>
           </ButtonGroup>
           <ButtonGroup variant="text" size="medium" area-label="text button group" sx={{ textAlign: 'right', marginLeft: '1.5em' }}>
             <Button key="editButton" color="waiting">
@@ -146,7 +169,8 @@ BasicCard.propTypes = {
 }
 BasicCard.defaultProps = {
   taskInfo: {
-    taskId: 'ID0001',
+    taskId: '68193e914edb4453ae238d4693fa5c4b',
+    // taskId: 'fde598874e434fb79e3750bf6ee16519',
     status: '진행',
     title: '제목입니다.',
     registDt: '2023/04/17',
