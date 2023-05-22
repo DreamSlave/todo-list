@@ -16,6 +16,11 @@ import styles from '../assets/css/Task.module.css'
 import { PropTypes } from 'prop-types';
 import ButtonGroup from '@mui/material/ButtonGroup'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import ApiUtil from "../api/api.util";
+import ApiConfig from "../api/api.config";
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const bull = (
   <Box
@@ -30,9 +35,7 @@ const bull = (
 function BasicCard({ taskInfo }) {
   
   const [mode, setMode] = useState('VIEW')
-  // const [taskInfo, setTaskInfo] = useState({})
-
-  console.log(`taskInfo ::: ${JSON.stringify(taskInfo)}`)
+  const [task, setTask] = useState(taskInfo)
   
   /* React.useEffect(() => {
   }, []) */
@@ -60,9 +63,31 @@ function BasicCard({ taskInfo }) {
     }
   })
 
+  const changeStatus = function(e) {
+
+    let params = {
+      parent : {
+        database_id: `${ApiConfig.mainDataBaseId}`
+      },
+      properties : {
+        status: {
+          select: {
+            name: e.target.textContent,
+          }
+        },
+      }
+    }
+    ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
+      setTask({
+        ...task,
+        status: res.data.properties.status.select.name
+      })
+    })
+  }
+
 
   return (
-    <Card sx={{ minWidth: 275, backgroundColor: (taskInfo.status === '대기' ? '#F5E8C0' : taskInfo.status === '진행' ? '#297CA7' : taskInfo.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
+    <Card sx={{ minWidth: 275, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7' : task.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
       <CardContent>
         {/* header */}
         {/* <Box sx={{
@@ -74,11 +99,11 @@ function BasicCard({ taskInfo }) {
         > */}
         <ThemeProvider theme={statusButtonTheme}>
           <ButtonGroup variant="contained" size="medium" area-label="outlined button group">
-            <Button key="대기" color="waiting">대기</Button>
-            <Button key="진행" color="processing">진행</Button>
-            <Button key="완료" color="complete" sx={{ color: 'white' }}>완료</Button>
+            <Button key="대기" color="waiting" onClick={changeStatus}>대기</Button>
+            <Button key="진행" color="processing" onClick={changeStatus}>진행</Button>
+            <Button key="완료" color="complete" sx={{ color: 'white' }} onClick={changeStatus}>완료</Button>
           </ButtonGroup>
-          <ButtonGroup variant="text" size="medium" area-label="text button group" sx={{ textAlign: 'right', marginLeft: '1.5em' }}>
+          {/* <ButtonGroup variant="text" size="medium" area-label="text button group" sx={{ textAlign: 'right', marginLeft: '1.5em' }}>
             <Button key="editButton" color="waiting">
               <img  alt="Ellipse73218"
                     src={TaskEditImg}
@@ -91,7 +116,24 @@ function BasicCard({ taskInfo }) {
                     className={styles['ellipse81']}
               />
             </Button>
-          </ButtonGroup>
+          </ButtonGroup> */}
+
+          <Stack direction="row" spacing={0} sx={{ width: '100%' }} justifyContent="flex-end">
+            <IconButton aria-label="delete">
+              {/* <DeleteIcon /> */}
+              <img  alt="Ellipse73218"
+                    src={TaskEditImg}
+                    className={styles['ellipse71']}
+              />
+            </IconButton>
+            <IconButton aria-label="delete" disabled color="primary">
+              {/* <DeleteIcon /> */}
+              <img  alt="Ellipse83218"
+                    src={TaskCloseImg}
+                    className={styles['ellipse81']}
+              />
+            </IconButton>
+          </Stack>
         </ThemeProvider>
         {/* </Box> */}
         {/* <Box sx={{ ...statusButtonBasicStyles, bgcolor: '#F5E8C0' }} />
@@ -116,26 +158,26 @@ function BasicCard({ taskInfo }) {
         {/* body */}
         <Typography variant="h5" component="div">
           {/* be{bull}nev{bull}o{bull}lent */}
-          {taskInfo.title}
+          {task.title}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {taskInfo.registDt}
+          {task.registDt}
         </Typography>
         <Typography variant="body2">
-          {taskInfo.contents}
+          {task.contents}
           <br />
         </Typography>
       </CardContent>
 
       {/* bottom */}
       <CardActions>
-        {taskInfo.importYn === 'Y' && 
+        {task.importYn === 'Y' && 
           <img
               alt="Ellipse83218"
               src={FireTaskImg}
               className={styles['ellipse81']}
           />}
-        {taskInfo.category && <Chip label={taskInfo.category} variant="outlined" />}
+        {task.category && <Chip label={task.category} variant="outlined" />}
       </CardActions>
     </Card>
   );
@@ -146,7 +188,8 @@ BasicCard.propTypes = {
 }
 BasicCard.defaultProps = {
   taskInfo: {
-    taskId: 'ID0001',
+    taskId: '68193e914edb4453ae238d4693fa5c4b',
+    // taskId: 'fde598874e434fb79e3750bf6ee16519',
     status: '진행',
     title: '제목입니다.',
     registDt: '2023/04/17',
