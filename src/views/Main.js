@@ -11,32 +11,19 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { DragDropContext, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function Main() {
   return (
       <Container sx={{textAlign: 'center'}} maxWidth={false}>
         <Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >
         </Box>
-        <DragDropContext
-            onDragEnd={onDragEnd}
-            onDragStart={onDragStart}
-        >
-          <TaskList></TaskList>
-        </DragDropContext>
+        <TaskList></TaskList>
         <SearchBar>
         </SearchBar>
         <TaskList></TaskList>
       </Container>
   );
-}
-const onDragEnd = () => {
-  //드래그 끝나면 할일
-  console.log("::onDragEnd::")
-}
-const onDragStart = () => {
-  //드래그 시작하면 할일
-  console.log("::onDragStart::")
 }
 function SearchTag(){
   return (
@@ -93,40 +80,60 @@ function TaskList() {
     { taskId: "4", title: "산책" },
     { taskId: "5", title: "요리" }
   ];
+  const onDragEnd = ({ source, destination }) => {
+    if (!destination) return;
+
+    //드래그 끝나면 할일
+    console.log("::onDragEnd::")
+  }
+  const onDragStart = () => {
+    //드래그 시작하면 할일
+    console.log("::onDragStart::")
+  }
   return (
       <Container sx={{ m: 10 }}>
         <Box className={MainStyles['task']} >
           <Box className={MainStyles['add']}>
             <AddIcon/>
           </Box>
-          <Swiper
-              modules={[Navigation, Pagination]}
-              slidesPerView={3}
-              navigation={true}
-              spaceBetween={10}
-              pagination={{ clickable: true }}
-              scrollbar={{ draggable: true }}
-          >
-            <SwiperSlide><Task/></SwiperSlide>
-            <SwiperSlide><Task/></SwiperSlide>
-            <SwiperSlide><Task/></SwiperSlide>
-            <SwiperSlide><Task/></SwiperSlide>
-            <SwiperSlide><Task/></SwiperSlide>
-            {/*{(provided) => (*/}
-            {/*    <div*/}
-            {/*        ref={provided.innerRef}*/}
-            {/*        {...provided.droppableProps}>*/}
-            {/*      {todos.map(item =>*/}
-            {/*          <SwiperSlide key={item.taskId}>*/}
-            {/*            <div key={item.taskId} style={{background: '#FFFFF0'}}>{item.title}</div>*/}
-            {/*          </SwiperSlide>*/}
-            {/*      )}*/}
-            {/*    </div>*/}
-            {/*  */}
-            {/*)}*/}
-            <span slot="wrapper-start">start</span>
-            <span slot="wrapper-end">end</span>
-          </Swiper>
+            <DragDropContext
+                droppableId="cards"
+                onDragEnd={onDragEnd}
+                onDragStart={onDragStart}
+            >
+              <Droppable droppableId="cards" key="cards" direction="horizontal">
+                {(provided, snapshot) => (
+                  <div className="cards" {...provided.droppableProps} ref={provided.innerRef} >
+                    <Swiper
+                        modules={[Navigation, Pagination]}
+                        slidesPerView={3}
+                        navigation={true}
+                        spaceBetween={10}
+                        pagination={{ clickable: true }}
+                        scrollbar={{ draggable: true }}
+                    >
+                      {todos.map((item, index)  =>
+                        <Draggable draggableId={item.taskId} index={index} id={item.taskId} key={item.taskId}>
+                          {(provided, snapshot) =>
+                              <span className={MainStyles['card']} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                <SwiperSlide >
+                                <div>{item.title}</div>
+                                {/*<Task/>*/}
+                                </SwiperSlide>
+                              </span>
+
+                          }
+                        </Draggable>
+                    )}
+                      <span slot="wrapper-start">start</span>
+                      <span slot="wrapper-end">end</span>
+                    </Swiper>
+                    {provided.placeholder}
+                  </div>
+
+                )}
+              </Droppable>
+            </DragDropContext>
         </Box>
       </Container>
 
