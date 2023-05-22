@@ -16,3 +16,9 @@
   height:304px;
 }
 
+.card {
+  display: inline-block;
+  text-align: center;
+  background-color:#FEE09A;
+}
+
