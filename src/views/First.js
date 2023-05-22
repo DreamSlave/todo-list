@@ -3,9 +3,7 @@ import Card from "@mui/material/Card";
 import '../assets/css/App.css';
 import styles from '../assets/css/App.module.css'
 import firstStyles from '../assets/css/First.module.css'
-import Header from "../component/Header";
 import HeaderStyles from "../assets/css/Header.module.css";
-import Chip from '@mui/material/Chip';
 import ApiUtil from "../api/api.util";
 import ApiConfig from "../api/api.config";
 import { useNavigate } from "react-router-dom";
@@ -75,12 +73,7 @@ function First() {
   }
   return (
       <div>
-        <div className={styles['frame0']}>
-          <div className={styles['group16']}>
-            <div className={styles['navi']}>
-              <Header />
-            </div>
-          </div>
+        <div>
           <div className={'w50 center '}>
             <span className={'font60 pdb10' + firstStyles['fit']}>첫번째 할 일을 기록해보세요!</span>
             <Card sx={{ width : '100%', marginTop : '10px' }}>
