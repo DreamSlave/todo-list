@@ -7,10 +7,16 @@ import Task from "./views/Task";
 import Main from "./views/Main"; //모듈 스타일 import
 
 import ApiUtil from "./api/api.util.js";
+import Header from "./component/Header";
 ApiUtil.init()
 function App() {
   return (
-      <div>
+      <div className={styles['frame0']}>
+          <div className={styles['group16']}>
+              <div className={styles['navi']}>
+                  <Header />
+              </div>
+          </div>
 
         <BrowserRouter>
           <Routes>
