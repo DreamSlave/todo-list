@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import { useState } from 'react/cjs/react.development'
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -8,9 +7,9 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Chip } from "@mui/material";
-import Brightness1Icon from '@mui/icons-material/Brightness1';
 import TaskEditImg from '../assets/imgs/edit_task.png'
 import TaskCloseImg from '../assets/imgs/close_task.png'
+import TaskConfirmImg from '../assets/imgs/confirm_task.png'
 import FireTaskImg from '../assets/imgs/fire_task.png'
 import styles from '../assets/css/Task.module.css'
 import { PropTypes } from 'prop-types';
@@ -22,32 +21,23 @@ import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const bull = (
+/* const bull = (
   <Box
     component="span"
     sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
   >
     •
   </Box>
-);
+); */
 
 
-function BasicCard({ taskInfo }) {
+function BasicCard({ modeProps, taskInfoProps }) {
   
-  const [mode, setMode] = useState('VIEW')
-  const [task, setTask] = useState(taskInfo)
+  const [mode, setMode] = useState(modeProps ?? 'VIEW')
+  const [task, setTask] = useState(taskInfoProps)
   
   /* React.useEffect(() => {
   }, []) */
-  const statusButtonBasicStyles = {
-    bgcolor: 'backgroud.paper',
-    borderColor: 'text.primary',
-    borderRadius: '50%',
-    m: 1,
-    border: 1,
-    width: '1.5rem',
-    height: '1.5rem'
-  }
 
   const statusButtonTheme = createTheme({
     palette: {
@@ -63,6 +53,7 @@ function BasicCard({ taskInfo }) {
     }
   })
 
+  // 진행상태 변경 함수
   const changeStatus = function(e) {
 
     let params = {
@@ -85,9 +76,35 @@ function BasicCard({ taskInfo }) {
     })
   }
 
+  // 모드 변경(VIEW/EDIT)
+  const changeMode = function(e) {
+    setMode(mode === 'VIEW' ? 'EDIT' : 'VIEW')
+  }
+
+  const deleteTask = function(e) {
+    let params = {
+      parent : {
+        database_id: `${ApiConfig.mainDataBaseId}`
+      },
+      /* properties : {
+        title: {
+          select: {
+            name: e.target.textContent,
+          }
+        },
+      } */
+    }
+    ApiUtil.delete(`${ApiConfig.notionDomain}/v1/blocks/${task.taskId}`, params).then(res => {
+      // TODO: parent component에 noti 해줘야 함
+      alert('삭제되었습니다.')
+    })
+  }
 
   return (
     <Card sx={{ minWidth: 275, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7' : task.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
+
+      mode ::: {mode}
+      
       <CardContent>
         {/* header */}
         {/* <Box sx={{
@@ -119,46 +136,36 @@ function BasicCard({ taskInfo }) {
           </ButtonGroup> */}
 
           <Stack direction="row" spacing={0} sx={{ width: '100%' }} justifyContent="flex-end">
-            <IconButton aria-label="delete">
-              {/* <DeleteIcon /> */}
-              <img  alt="Ellipse73218"
-                    src={TaskEditImg}
-                    className={styles['ellipse71']}
-              />
-            </IconButton>
-            <IconButton aria-label="delete" disabled color="primary">
-              {/* <DeleteIcon /> */}
+            {mode === 'VIEW' ?
+              <IconButton aria-label="edit" onClick={changeMode}>
+                <img  alt="Ellipse73218"
+                      src={TaskEditImg}
+                      className={styles['ellipse91']}
+                />
+              </IconButton> :
+              <IconButton aria-label="edit" onClick={changeMode}>
+                {/* <DeleteIcon /> */}
+                <img  src={TaskConfirmImg}
+                      className={styles['ellipse91']}
+                />
+              </IconButton>
+            }
+            <IconButton aria-label="delete" onClick={deleteTask}>
               <img  alt="Ellipse83218"
                     src={TaskCloseImg}
-                    className={styles['ellipse81']}
+                    className={styles['ellipse91']}
               />
             </IconButton>
           </Stack>
         </ThemeProvider>
-        {/* </Box> */}
-        {/* <Box sx={{ ...statusButtonBasicStyles, bgcolor: '#F5E8C0' }} />
-        <Box sx={{ ...statusButtonBasicStyles, bgcolor: '#297CA7' }} />
-        <Box sx={{ ...statusButtonBasicStyles, bgcolor: '#0C2426' }} /> */}
-        {/* <Brightness1Icon sx={{ color: "#F5E8C0", fontSize: 30, border: 1, borderColor: 'black' }} />
-        <Brightness1Icon sx={{ color: "#297CA7", fontSize: 30, border: 1, borderColor: 'black'  }} />
-        <Brightness1Icon sx={{ color: "#0C2426", fontSize: 30, border: 1, borderColor: 'black'  }} /> */}
-        {/* <div className={styles['header-btn-wrap']}>
-          <img
-              alt="Ellipse73218"
-              src={TaskEditImg}
-              className={styles['ellipse71']}
-          />
-          <img
-              alt="Ellipse83218"
-              src={TaskCloseImg}
-              className={styles['ellipse81']}
-          />
-        </div> */}
 
         {/* body */}
         <Typography variant="h5" component="div">
           {/* be{bull}nev{bull}o{bull}lent */}
-          {task.title}
+          {mode === 'VIEW' ?
+              task.title :
+              <input type="text" value={task.title} />    
+          }
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           {task.registDt}
@@ -184,14 +191,16 @@ function BasicCard({ taskInfo }) {
 }
 
 BasicCard.propTypes = {
-  taskInfo: PropTypes.object
+  modeProps: PropTypes.string,
+  taskInfoProps: PropTypes.object
 }
 BasicCard.defaultProps = {
-  taskInfo: {
+  modeProps: 'VIEW',
+  taskInfoProps: {
     taskId: '68193e914edb4453ae238d4693fa5c4b',
     // taskId: 'fde598874e434fb79e3750bf6ee16519',
     status: '진행',
-    title: '제목입니다.',
+    title: '오늘..내할일..!',
     registDt: '2023/04/17',
     contents: '내용입니다. 내용입니다. 내용입니다.',
     category: '회사업무',
