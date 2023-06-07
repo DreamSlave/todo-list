@@ -31,10 +31,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 ); */
 
 
-function BasicCard({ taskInfo }) {
+function BasicCard({ modeProps, taskInfoProps }) {
   
-  const [mode, setMode] = useState('VIEW')
-  const [task, setTask] = useState(taskInfo)
+  const [mode, setMode] = useState(modeProps ?? 'VIEW')
+  const [task, setTask] = useState(taskInfoProps)
   
   /* React.useEffect(() => {
   }, []) */
@@ -81,6 +81,24 @@ function BasicCard({ taskInfo }) {
     setMode(mode === 'VIEW' ? 'EDIT' : 'VIEW')
   }
 
+  const deleteTask = function(e) {
+    let params = {
+      parent : {
+        database_id: `${ApiConfig.mainDataBaseId}`
+      },
+      /* properties : {
+        title: {
+          select: {
+            name: e.target.textContent,
+          }
+        },
+      } */
+    }
+    ApiUtil.delete(`${ApiConfig.notionDomain}/v1/blocks/${task.taskId}`, params).then(res => {
+      // TODO: parent component에 noti 해줘야 함
+      alert('삭제되었습니다.')
+    })
+  }
 
   return (
     <Card sx={{ minWidth: 275, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7' : task.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
@@ -132,7 +150,7 @@ function BasicCard({ taskInfo }) {
                 />
               </IconButton>
             }
-            <IconButton aria-label="delete">
+            <IconButton aria-label="delete" onClick={deleteTask}>
               <img  alt="Ellipse83218"
                     src={TaskCloseImg}
                     className={styles['ellipse91']}
@@ -173,14 +191,16 @@ function BasicCard({ taskInfo }) {
 }
 
 BasicCard.propTypes = {
-  taskInfo: PropTypes.object
+  modeProps: PropTypes.string,
+  taskInfoProps: PropTypes.object
 }
 BasicCard.defaultProps = {
-  taskInfo: {
+  modeProps: 'VIEW',
+  taskInfoProps: {
     taskId: '68193e914edb4453ae238d4693fa5c4b',
     // taskId: 'fde598874e434fb79e3750bf6ee16519',
     status: '진행',
-    title: '제목입니다.',
+    title: '오늘..내할일..!',
     registDt: '2023/04/17',
     contents: '내용입니다. 내용입니다. 내용입니다.',
     category: '회사업무',
