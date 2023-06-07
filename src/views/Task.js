@@ -81,24 +81,35 @@ function BasicCard({ modeProps, taskInfoProps }) {
     setMode(mode === 'VIEW' ? 'EDIT' : 'VIEW')
   }
 
+  // 진행상태 삭제 함수
   const deleteTask = function(e) {
     let params = {
       parent : {
         database_id: `${ApiConfig.mainDataBaseId}`
       },
-      /* properties : {
-        title: {
-          select: {
-            name: e.target.textContent,
-          }
-        },
-      } */
     }
     ApiUtil.delete(`${ApiConfig.notionDomain}/v1/blocks/${task.taskId}`, params).then(res => {
       // TODO: parent component에 noti 해줘야 함
       alert('삭제되었습니다.')
     })
   }
+
+  const changeTask = function(e, taskField) {
+    // console.log(`changeTask ::: ${e.target}`)
+    // console.log(`changeTask ::: ${taskField}`)
+
+    // let getFieldName = new Function('return `${taskField}`')
+    let getFieldName = new Function('taskField', 'return `${taskField}`');
+    let field = getFieldName(taskField)
+
+    console.log(`changeTask ::: ${getFieldName(taskField)}`)
+
+    setTask({ ...task, field: e.target.value })
+  }
+
+  /* const changeContents = function(e) {
+    setTask({ ...task, contents: e.target.value })
+  } */
 
   return (
     <Card sx={{ minWidth: 275, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7' : task.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
@@ -164,14 +175,17 @@ function BasicCard({ modeProps, taskInfoProps }) {
           {/* be{bull}nev{bull}o{bull}lent */}
           {mode === 'VIEW' ?
               task.title :
-              <input type="text" value={task.title} />    
+              <input type="text" value={task.title} onChange={(e) => changeTask(e, 'title')} />    
           }
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           {task.registDt}
         </Typography>
         <Typography variant="body2">
-          {task.contents}
+          {mode === 'VIEW' ?
+              task.contents :
+              <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} />
+          }
           <br />
         </Typography>
       </CardContent>
@@ -197,14 +211,13 @@ BasicCard.propTypes = {
 BasicCard.defaultProps = {
   modeProps: 'VIEW',
   taskInfoProps: {
-    taskId: '68193e914edb4453ae238d4693fa5c4b',
-    // taskId: 'fde598874e434fb79e3750bf6ee16519',
-    status: '진행',
-    title: '오늘..내할일..!',
-    registDt: '2023/04/17',
-    contents: '내용입니다. 내용입니다. 내용입니다.',
-    category: '회사업무',
-    importYn: 'Y',
+    taskId: '',
+    status: '대기',
+    title: '',
+    registDt: '',
+    contents: '',
+    category: '',
+    importYn: 'N',
   }
 }
 
