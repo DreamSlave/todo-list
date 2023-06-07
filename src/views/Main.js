@@ -23,6 +23,7 @@ async function getTaskList() {
 
             response.data.results.forEach(notionTask => {
                 let taskInfo = {
+                    viewMode : 'VIEW',
                     taskId: notionTask.id,
                     status: notionTask.properties.status.select?.name,
                     title: notionTask.properties.title.title[0]?.plain_text,
@@ -132,7 +133,7 @@ function TaskList({id, todos, setTodos}) {
     //드래그 시작하면 할일
     console.log("::onDragStart::")
   }
-    function saveTask(){
+    function saveTask(importYn = 'N'){
         let params = {
             parent : {
                 database_id: `${ApiConfig.mainDataBaseId}`
@@ -164,14 +165,18 @@ function TaskList({id, todos, setTodos}) {
                 },
                 importYn : {
                     select: {
-                        name: `Y`
+                        name: importYn
                     }
                 }
             }
         }
         ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params).then(async function (response) {
             if (response.status === 200) {
-                setTodos(await getTaskList())
+                let updateTaskList = await getTaskList()
+                let newTaskId = response.data.id
+                let findIndex = updateTaskList.findIndex(task=>task.taskId===newTaskId)
+                updateTaskList[findIndex].viewMode='EDIT'
+                setTodos(updateTaskList)
             } else {
                 alert('저장실패')
             }
@@ -197,7 +202,7 @@ function TaskList({id, todos, setTodos}) {
                           {(provided, snapshot) =>
                               <span className={MainStyles['card']} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                 {<Task
-                                    modeProps={'VIEW'}
+                                    modeProps={item.viewMode}
                                     taskInfoProps={item}
                                 />}
                               </span>
