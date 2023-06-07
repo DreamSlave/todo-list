@@ -132,12 +132,58 @@ function TaskList({id, todos, setTodos}) {
     //드래그 시작하면 할일
     console.log("::onDragStart::")
   }
+    function saveTask(){
+        let params = {
+            parent : {
+                database_id: `${ApiConfig.mainDataBaseId}`
+            },
+            properties : {
+                title : {
+                    title: [
+                        {
+                            text: {
+                                content: ``
+                            }
+                        }
+                    ]
+                },
+                contents : {
+                    type: "rich_text",
+                    rich_text : [
+                        {
+                            text: {
+                                content : ``
+                            }
+                        }
+                    ]
+                },
+                status : {
+                    select: {
+                        name: `대기`
+                    }
+                },
+                importYn : {
+                    select: {
+                        name: `Y`
+                    }
+                }
+            }
+        }
+        ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params).then(function (response){
+            if(response.status === 200){
+
+                // getTaskList()
+            }else{
+                alert('저장실패')
+            }
+        })
+    }
   return (
 
       <Container sx={{ m: 10 }}>
         <Box className={MainStyles['task']} >
           <Box className={MainStyles['add']}>
-            <AddIcon/>
+            <span onClick={(e)=>saveTask()}><AddIcon/></span>
           </Box>
             <DragDropContext
                 droppableId={id}
@@ -151,8 +197,7 @@ function TaskList({id, todos, setTodos}) {
                         <Draggable draggableId={item.taskId} index={index} id={item.taskId} key={item.taskId}>
                           {(provided, snapshot) =>
                               <span className={MainStyles['card']} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                <div>{item.title}</div>
-                                {/*<Task/>*/}
+                                {<Task/>}
                               </span>
                           }
                         </Draggable>
