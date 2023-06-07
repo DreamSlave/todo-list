@@ -97,7 +97,7 @@ function TaskList({id, todos, setTodos}) {
       const sourceData = todos[source.index];
       let newDatas= prev;
       newDatas.splice(source.index, 1);
-      newDatas.splice(destination.index, 0, sourceData);
+      newDatas.push(destination.index, 0, sourceData);
 
       return newDatas;
     })
@@ -123,30 +123,16 @@ function TaskList({id, todos, setTodos}) {
               <Droppable droppableId={id} key="cards" direction="horizontal">
                 {(provided, snapshot) => (
                   <div className="cards" {...provided.droppableProps} ref={provided.innerRef} >
-                    <Swiper
-                        modules={[Navigation, Pagination]}
-                        slidesPerView={3}
-                        navigation={true}
-                        spaceBetween={10}
-                        pagination={{ clickable: true }}
-                        scrollbar={{ draggable: true }}
-                    >
                       {todos.map((item, index)  =>
                         <Draggable draggableId={item.taskId} index={index} id={item.taskId} key={item.taskId}>
                           {(provided, snapshot) =>
                               <span className={MainStyles['card']} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                <SwiperSlide >
                                 <div>{item.title}</div>
                                 {/*<Task/>*/}
-                                </SwiperSlide>
                               </span>
-
                           }
                         </Draggable>
                     )}
-                      <span slot="wrapper-start">start</span>
-                      <span slot="wrapper-end">end</span>
-                    </Swiper>
                     {provided.placeholder}
                   </div>
 
