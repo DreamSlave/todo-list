@@ -78,7 +78,40 @@ function BasicCard({ modeProps, taskInfoProps }) {
 
   // 모드 변경(VIEW/EDIT)
   const changeMode = function(e) {
-    setMode(mode === 'VIEW' ? 'EDIT' : 'VIEW')
+
+    if(mode === 'VIEW') {
+      setMode('EDIT')
+    } else {
+      let params = {
+        parent : {
+          database_id: `${ApiConfig.mainDataBaseId}`
+        },
+        properties : {
+          title: {
+            title: [
+              {
+                text: {
+                  content: task.title
+                }
+              }
+            ]
+          },
+          contents: {
+            type: 'rich_text',
+            rich_text: [
+              {
+                text: {
+                  content: task.contents
+                }
+              }
+            ]
+          }
+        }
+      }
+      ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
+        setMode('VIEW')
+      })
+    }
   }
 
   // 진행상태 삭제 함수
@@ -95,21 +128,8 @@ function BasicCard({ modeProps, taskInfoProps }) {
   }
 
   const changeTask = function(e, taskField) {
-    // console.log(`changeTask ::: ${e.target}`)
-    // console.log(`changeTask ::: ${taskField}`)
-
-    // let getFieldName = new Function('return `${taskField}`')
-    let getFieldName = new Function('taskField', 'return `${taskField}`');
-    let field = getFieldName(taskField)
-
-    console.log(`changeTask ::: ${getFieldName(taskField)}`)
-
-    setTask({ ...task, field: e.target.value })
+    setTask({ ...task, [taskField]: e.target.value })
   }
-
-  /* const changeContents = function(e) {
-    setTask({ ...task, contents: e.target.value })
-  } */
 
   return (
     <Card sx={{ minWidth: 275, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7' : task.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
@@ -155,7 +175,6 @@ function BasicCard({ modeProps, taskInfoProps }) {
                 />
               </IconButton> :
               <IconButton aria-label="edit" onClick={changeMode}>
-                {/* <DeleteIcon /> */}
                 <img  src={TaskConfirmImg}
                       className={styles['ellipse91']}
                 />
@@ -212,6 +231,7 @@ BasicCard.defaultProps = {
   modeProps: 'VIEW',
   taskInfoProps: {
     taskId: '',
+    // taskId: '1f13178d70d34c11b794e8043aaf11c0',
     status: '대기',
     title: '',
     registDt: '',
