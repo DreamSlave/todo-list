@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, InputAdornment, TextField, Button, Chip, Box} from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from '@mui/icons-material/Add';
 import MainStyles from "../assets/css/Main.module.css";
@@ -14,14 +14,24 @@ import 'swiper/css/scrollbar';
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 function Main() {
+  const [todos, setTodos] = useState([
+    { taskId: "1", title: "공부" ,important: "Y"},
+    { taskId: "2", title: "헬스" ,important: "Y"},
+    { taskId: "3", title: "독서" ,important: "Y"},
+    { taskId: "4", title: "산책" ,important: "Y"},
+    { taskId: "5", title: "요리" ,important: "Y" },
+    { taskId: "6", title: "not1" ,important: "N" },
+    { taskId: "7", title: "not2" ,important: "N" },
+    { taskId: "8", title: "not3" ,important: "N" },
+  ])
   return (
       <Container sx={{textAlign: 'center'}} maxWidth={false}>
         <Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >
         </Box>
-        <TaskList></TaskList>
+        <TaskList id="important" todos={todos.filter(item => item.important ==='Y')} setTodos ={setTodos}></TaskList>
         <SearchBar>
         </SearchBar>
-        <TaskList></TaskList>
+        <TaskList id="normal" todos={todos.filter(item => item.important !=='Y')} setTodos ={setTodos}></TaskList>
       </Container>
   );
 }
@@ -72,17 +82,25 @@ function SearchBar() {
 }
 
 
-function TaskList() {
-  const todos = [
-    { taskId: "1", title: "공부" },
-    { taskId: "2", title: "헬스" },
-    { taskId: "3", title: "독서" },
-    { taskId: "4", title: "산책" },
-    { taskId: "5", title: "요리" }
-  ];
-  const onDragEnd = ({ source, destination }) => {
-    if (!destination) return;
+function TaskList({id, todos, setTodos}) {
 
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+    console.log('result ? ', result);
+
+    // 드래그 결과
+    // source : 원본
+    // destination : 변경
+    const { destination, source } = result;
+
+    setTodos((prev) =>{
+      const sourceData = todos[source.index];
+      let newDatas= prev;
+      newDatas.splice(source.index, 1);
+      newDatas.push(destination.index, 0, sourceData);
+
+      return newDatas;
+    })
     //드래그 끝나면 할일
     console.log("::onDragEnd::")
   }
@@ -91,43 +109,30 @@ function TaskList() {
     console.log("::onDragStart::")
   }
   return (
+
       <Container sx={{ m: 10 }}>
         <Box className={MainStyles['task']} >
           <Box className={MainStyles['add']}>
             <AddIcon/>
           </Box>
             <DragDropContext
-                droppableId="cards"
+                droppableId={id}
                 onDragEnd={onDragEnd}
                 onDragStart={onDragStart}
             >
-              <Droppable droppableId="cards" key="cards" direction="horizontal">
+              <Droppable droppableId={id} key="cards" direction="horizontal">
                 {(provided, snapshot) => (
                   <div className="cards" {...provided.droppableProps} ref={provided.innerRef} >
-                    <Swiper
-                        modules={[Navigation, Pagination]}
-                        slidesPerView={3}
-                        navigation={true}
-                        spaceBetween={10}
-                        pagination={{ clickable: true }}
-                        scrollbar={{ draggable: true }}
-                    >
                       {todos.map((item, index)  =>
                         <Draggable draggableId={item.taskId} index={index} id={item.taskId} key={item.taskId}>
                           {(provided, snapshot) =>
                               <span className={MainStyles['card']} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                <SwiperSlide >
                                 <div>{item.title}</div>
                                 {/*<Task/>*/}
-                                </SwiperSlide>
                               </span>
-
                           }
                         </Draggable>
                     )}
-                      <span slot="wrapper-start">start</span>
-                      <span slot="wrapper-end">end</span>
-                    </Swiper>
                     {provided.placeholder}
                   </div>
 
