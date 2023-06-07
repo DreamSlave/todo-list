@@ -11,27 +11,51 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import ApiUtil from "../api/api.util";
+import ApiConfig from "../api/api.config";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
+
+async function getTaskList() {
+    let taskArray = []
+    await ApiUtil.post(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}/query`).then(function (response) {
+        if (response.status === 200) {
+
+            response.data.results.forEach(notionTask => {
+                let taskInfo = {
+                    taskId: notionTask.id,
+                    status: notionTask.properties.status.select?.name,
+                    title: notionTask.properties.title.title[0]?.plain_text,
+                    registDt: notionTask.properties.registDt.created_time,
+                    contents: notionTask.properties.contents.rich_text[0]?.plain_text,
+                    category: notionTask.properties.category.select?.name,
+                    importYn: notionTask.properties.importYn.select?.name
+                }
+                taskArray.push(taskInfo)
+            })
+        }
+    })
+    return taskArray
+}
 function Main() {
-  const [todos, setTodos] = useState([
-    { taskId: "1", title: "공부" ,important: "Y"},
-    { taskId: "2", title: "헬스" ,important: "Y"},
-    { taskId: "3", title: "독서" ,important: "Y"},
-    { taskId: "4", title: "산책" ,important: "Y"},
-    { taskId: "5", title: "요리" ,important: "Y" },
-    { taskId: "6", title: "not1" ,important: "N" },
-    { taskId: "7", title: "not2" ,important: "N" },
-    { taskId: "8", title: "not3" ,important: "N" },
-  ])
+
+  let [todos, setTodos] = useState([])
+
+    useEffect(() => {
+        async function fetchData() {
+            setTodos( await getTaskList())
+        }
+        fetchData();
+    },[]);
+
   return (
       <Container sx={{textAlign: 'center'}} maxWidth={false}>
         <Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >
         </Box>
-        <TaskList id="important" todos={todos.filter(item => item.important ==='Y')} setTodos ={setTodos}></TaskList>
+        <TaskList id="important" todos={todos.filter(item => item.importYn ==='Y')} setTodos ={setTodos}></TaskList>
         <SearchBar>
         </SearchBar>
-        <TaskList id="normal" todos={todos.filter(item => item.important !=='Y')} setTodos ={setTodos}></TaskList>
+        <TaskList id="normal" todos={todos.filter(item => item.importYn !=='Y')} setTodos ={setTodos}></TaskList>
       </Container>
   );
 }
