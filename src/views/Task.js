@@ -78,26 +78,57 @@ function BasicCard({ modeProps, taskInfoProps }) {
 
   // 모드 변경(VIEW/EDIT)
   const changeMode = function(e) {
-    setMode(mode === 'VIEW' ? 'EDIT' : 'VIEW')
+
+    if(mode === 'VIEW') {
+      setMode('EDIT')
+    } else {
+      let params = {
+        parent : {
+          database_id: `${ApiConfig.mainDataBaseId}`
+        },
+        properties : {
+          title: {
+            title: [
+              {
+                text: {
+                  content: task.title
+                }
+              }
+            ]
+          },
+          contents: {
+            type: 'rich_text',
+            rich_text: [
+              {
+                text: {
+                  content: task.contents
+                }
+              }
+            ]
+          }
+        }
+      }
+      ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
+        setMode('VIEW')
+      })
+    }
   }
 
+  // 진행상태 삭제 함수
   const deleteTask = function(e) {
     let params = {
       parent : {
         database_id: `${ApiConfig.mainDataBaseId}`
       },
-      /* properties : {
-        title: {
-          select: {
-            name: e.target.textContent,
-          }
-        },
-      } */
     }
     ApiUtil.delete(`${ApiConfig.notionDomain}/v1/blocks/${task.taskId}`, params).then(res => {
       // TODO: parent component에 noti 해줘야 함
       alert('삭제되었습니다.')
     })
+  }
+
+  const changeTask = function(e, taskField) {
+    setTask({ ...task, [taskField]: e.target.value })
   }
 
   return (
@@ -144,7 +175,6 @@ function BasicCard({ modeProps, taskInfoProps }) {
                 />
               </IconButton> :
               <IconButton aria-label="edit" onClick={changeMode}>
-                {/* <DeleteIcon /> */}
                 <img  src={TaskConfirmImg}
                       className={styles['ellipse91']}
                 />
@@ -164,14 +194,17 @@ function BasicCard({ modeProps, taskInfoProps }) {
           {/* be{bull}nev{bull}o{bull}lent */}
           {mode === 'VIEW' ?
               task.title :
-              <input type="text" value={task.title} />    
+              <input type="text" value={task.title} onChange={(e) => changeTask(e, 'title')} />    
           }
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           {task.registDt}
         </Typography>
         <Typography variant="body2">
-          {task.contents}
+          {mode === 'VIEW' ?
+              task.contents :
+              <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} />
+          }
           <br />
         </Typography>
       </CardContent>
@@ -197,14 +230,14 @@ BasicCard.propTypes = {
 BasicCard.defaultProps = {
   modeProps: 'VIEW',
   taskInfoProps: {
-    taskId: '68193e914edb4453ae238d4693fa5c4b',
-    // taskId: 'fde598874e434fb79e3750bf6ee16519',
-    status: '진행',
-    title: '오늘..내할일..!',
-    registDt: '2023/04/17',
-    contents: '내용입니다. 내용입니다. 내용입니다.',
-    category: '회사업무',
-    importYn: 'Y',
+    taskId: '',
+    // taskId: '1f13178d70d34c11b794e8043aaf11c0',
+    status: '대기',
+    title: '',
+    registDt: '',
+    contents: '',
+    category: '',
+    importYn: 'N',
   }
 }
 

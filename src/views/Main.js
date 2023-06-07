@@ -177,11 +177,10 @@ function TaskList({id, importYn, todos, updateTaskList}) {
                 }
             }
         }
-        ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params).then(function (response){
-            if(response.status === 200){
-
-                // getTaskList()
-            }else{
+        ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params).then(async function (response) {
+            if (response.status === 200) {
+                setTodos(await getTaskList())
+            } else {
                 alert('저장실패')
             }
         })
@@ -205,7 +204,10 @@ function TaskList({id, importYn, todos, updateTaskList}) {
                         <Draggable draggableId={item.taskId} index={index} id={item.taskId} key={item.taskId}>
                           {(provided, snapshot) =>
                               <span className={MainStyles['card']} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                {<Task/>}
+                                {<Task
+                                    modeProps={'VIEW'}
+                                    taskInfoProps={item}
+                                />}
                               </span>
                           }
                         </Draggable>
