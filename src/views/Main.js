@@ -48,14 +48,18 @@ function Main() {
         fetchData();
     },[]);
 
+  function updateTaskList (result){
+    setTodos(result)
+  }
+
   return (
       <Container sx={{textAlign: 'center'}} maxWidth={false}>
         <Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >
         </Box>
-        <TaskList id="important" todos={todos.filter(item => item.importYn ==='Y')} setTodos ={setTodos}></TaskList>
+        <TaskList id="important" importYn="Y" todos={todos} updateTaskList ={updateTaskList}/>
         <SearchBar>
         </SearchBar>
-        <TaskList id="normal" todos={todos.filter(item => item.importYn !=='Y')} setTodos ={setTodos}></TaskList>
+        <TaskList id="normal" importYn="N" todos={todos} updateTaskList ={updateTaskList}></TaskList>
       </Container>
   );
 }
@@ -106,25 +110,29 @@ function SearchBar() {
 }
 
 
-function TaskList({id, todos, setTodos}) {
+function TaskList({id, importYn, todos, updateTaskList}) {
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
     console.log('result ? ', result);
-
+    console.log("::column::",column)
+    let newTodoList = [...todos]
     // 드래그 결과
     // source : 원본
     // destination : 변경
     const { destination, source } = result;
 
-    setTodos((prev) =>{
-      const sourceData = todos[source.index];
-      let newDatas= prev;
-      newDatas.splice(source.index, 1);
-      newDatas.push(destination.index, 0, sourceData);
+    const sourceData = todos[source.index];
 
-      return newDatas;
-    })
+    if(source.droppableId !== destination.droppableId){
+      console.log("::importYn::",importYn)
+    }
+
+    // console.log("::onDragEnd::")
+    const [reorderedItem] = newTodoList.splice(source.index, 1);
+    newTodoList.splice(destination.index, 0, reorderedItem);
+
+    updateTaskList(newTodoList)
     //드래그 끝나면 할일
     console.log("::onDragEnd::")
   }
@@ -186,11 +194,11 @@ function TaskList({id, todos, setTodos}) {
             <span onClick={(e)=>saveTask()}><AddIcon/></span>
           </Box>
             <DragDropContext
-                droppableId={id}
+                droppableId={importYn}
                 onDragEnd={onDragEnd}
                 onDragStart={onDragStart}
             >
-              <Droppable droppableId={id} key="cards" direction="horizontal">
+              <Droppable droppableId={importYn} key="cards" direction="horizontal">
                 {(provided, snapshot) => (
                   <div className="cards" {...provided.droppableProps} ref={provided.innerRef} >
                       {todos.map((item, index)  =>
