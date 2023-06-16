@@ -116,7 +116,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
   const onDragEnd = (result) => {
     if (!result.destination) return;
     console.log('result ? ', result);
-    console.log("::column::",column)
+    // console.log("::column::",column)
     let newTodoList = [...todos]
     // 드래그 결과
     // source : 원본
@@ -180,11 +180,11 @@ function TaskList({id, importYn, todos, updateTaskList}) {
         }
         ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params).then(async function (response) {
             if (response.status === 200) {
-                let updateTaskList = await getTaskList()
+                let getUpdateTaskList = await getTaskList()
                 let newTaskId = response.data.id
-                let findIndex = updateTaskList.findIndex(task=>task.taskId===newTaskId)
-                updateTaskList[findIndex].viewMode='EDIT'
-                setTodos(updateTaskList)
+                let findIndex = getUpdateTaskList.findIndex(task=>task.taskId===newTaskId)
+                getUpdateTaskList[findIndex].viewMode='EDIT'
+                updateTaskList(getUpdateTaskList)
             } else {
                 alert('저장실패')
             }
