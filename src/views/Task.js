@@ -35,6 +35,7 @@ function BasicCard({ modeProps, taskInfoProps }) {
   
   const [mode, setMode] = useState(modeProps ?? 'VIEW')
   const [task, setTask] = useState(taskInfoProps)
+  const [categoryInputMode, setCategoryInputMode] = useState(false)
   
   /* React.useEffect(() => {
   }, []) */
@@ -131,6 +132,29 @@ function BasicCard({ modeProps, taskInfoProps }) {
     setTask({ ...task, [taskField]: e.target.value })
   }
 
+  const clickCategory = function(e) {
+    setCategoryInputMode(!categoryInputMode)
+  }
+
+  const blurCategory = function(e) {
+    
+    let params = {
+      parent : {
+        database_id: `${ApiConfig.mainDataBaseId}`
+      },
+      properties : {
+        category: {
+          select: {
+            name: task.category,
+          }
+        },
+      }
+    }
+    ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
+      setCategoryInputMode(!categoryInputMode)
+    })
+  }
+
   return (
     <Card sx={{ minWidth: 275, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7' : task.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
 
@@ -217,7 +241,7 @@ function BasicCard({ modeProps, taskInfoProps }) {
               src={FireTaskImg}
               className={styles['ellipse81']}
           />}
-        {task.category && <Chip label={task.category} variant="outlined" />}
+        {categoryInputMode ? <input type="text" value={task.category} className={styles['input-cate']} onChange={(e) => changeTask(e, 'category')} onBlur={blurCategory} /> : <Chip label={task.category} variant="outlined" onClick={clickCategory} />}
       </CardActions>
     </Card>
   );
@@ -230,13 +254,13 @@ BasicCard.propTypes = {
 BasicCard.defaultProps = {
   modeProps: 'VIEW',
   taskInfoProps: {
-    taskId: '',
-    // taskId: '1f13178d70d34c11b794e8043aaf11c0',
+    // taskId: '',
+    taskId: '1f13178d70d34c11b794e8043aaf11c0',
     status: '대기',
-    title: '',
+    title: 'sss',
     registDt: '',
-    contents: '',
-    category: '',
+    contents: 'sssss',
+    category: 'saa',
     importYn: 'N',
   }
 }
