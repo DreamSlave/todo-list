@@ -23,6 +23,7 @@ async function getTaskList() {
 
             response.data.results.forEach(notionTask => {
                 let taskInfo = {
+                    viewMode : 'VIEW',
                     taskId: notionTask.id,
                     status: notionTask.properties.status.select?.name,
                     title: notionTask.properties.title.title[0]?.plain_text,
@@ -48,14 +49,18 @@ function Main() {
         fetchData();
     },[]);
 
+  function updateTaskList (result){
+    setTodos(result)
+  }
+
   return (
       <Container sx={{textAlign: 'center'}} maxWidth={false}>
         <Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >
         </Box>
-        <TaskList id="important" todos={todos.filter(item => item.importYn ==='Y')} setTodos ={setTodos}></TaskList>
+        <TaskList id="important" importYn="Y" todos={todos} updateTaskList ={updateTaskList}/>
         <SearchBar>
         </SearchBar>
-        <TaskList id="normal" todos={todos.filter(item => item.importYn !=='Y')} setTodos ={setTodos}></TaskList>
+        <TaskList id="normal" importYn="N" todos={todos} updateTaskList ={updateTaskList}></TaskList>
       </Container>
   );
 }
@@ -106,25 +111,29 @@ function SearchBar() {
 }
 
 
-function TaskList({id, todos, setTodos}) {
+function TaskList({id, importYn, todos, updateTaskList}) {
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
     console.log('result ? ', result);
-
+    // console.log("::column::",column)
+    let newTodoList = [...todos]
     // 드래그 결과
     // source : 원본
     // destination : 변경
     const { destination, source } = result;
 
-    setTodos((prev) =>{
-      const sourceData = todos[source.index];
-      let newDatas= prev;
-      newDatas.splice(source.index, 1);
-      newDatas.push(destination.index, 0, sourceData);
+    const sourceData = todos[source.index];
 
-      return newDatas;
-    })
+    if(source.droppableId !== destination.droppableId){
+      console.log("::importYn::",importYn)
+    }
+
+    // console.log("::onDragEnd::")
+    const [reorderedItem] = newTodoList.splice(source.index, 1);
+    newTodoList.splice(destination.index, 0, reorderedItem);
+
+    updateTaskList(newTodoList)
     //드래그 끝나면 할일
     console.log("::onDragEnd::")
   }
@@ -132,7 +141,7 @@ function TaskList({id, todos, setTodos}) {
     //드래그 시작하면 할일
     console.log("::onDragStart::")
   }
-    function saveTask(){
+    function saveTask(importYn = 'N'){
         let params = {
             parent : {
                 database_id: `${ApiConfig.mainDataBaseId}`
@@ -164,14 +173,18 @@ function TaskList({id, todos, setTodos}) {
                 },
                 importYn : {
                     select: {
-                        name: `Y`
+                        name: importYn
                     }
                 }
             }
         }
         ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params).then(async function (response) {
             if (response.status === 200) {
-                setTodos(await getTaskList())
+                let getUpdateTaskList = await getTaskList()
+                let newTaskId = response.data.id
+                let findIndex = getUpdateTaskList.findIndex(task=>task.taskId===newTaskId)
+                getUpdateTaskList[findIndex].viewMode='EDIT'
+                updateTaskList(getUpdateTaskList)
             } else {
                 alert('저장실패')
             }
@@ -185,11 +198,11 @@ function TaskList({id, todos, setTodos}) {
             <span onClick={(e)=>saveTask()}><AddIcon/></span>
           </Box>
             <DragDropContext
-                droppableId={id}
+                droppableId={importYn}
                 onDragEnd={onDragEnd}
                 onDragStart={onDragStart}
             >
-              <Droppable droppableId={id} key="cards" direction="horizontal">
+              <Droppable droppableId={importYn} key="cards" direction="horizontal">
                 {(provided, snapshot) => (
                   <div className="cards" {...provided.droppableProps} ref={provided.innerRef} >
                       {todos.map((item, index)  =>
@@ -197,7 +210,7 @@ function TaskList({id, todos, setTodos}) {
                           {(provided, snapshot) =>
                               <span className={MainStyles['card']} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                                 {<Task
-                                    modeProps={'VIEW'}
+                                    modeProps={item.viewMode}
                                     taskInfoProps={item}
                                 />}
                               </span>
