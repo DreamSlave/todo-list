@@ -42,25 +42,32 @@ function Main() {
 
   let [todos, setTodos] = useState([])
 
+  const [enabled, setEnabled] = useState(false);
+
     useEffect(() => {
         async function fetchData() {
             setTodos( await getTaskList())
         }
         fetchData();
+      setEnabled(true);
     },[]);
 
   function updateTaskList (result){
     setTodos(result)
+  }
+  if (!enabled) {
+    return null;
   }
 
   return (
       <Container sx={{textAlign: 'center'}} maxWidth={false}>
         <Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >
         </Box>
-        <TaskList id="important" importYn="Y" todos={todos} updateTaskList ={updateTaskList}/>
         <SearchBar>
         </SearchBar>
-        <TaskList id="normal" importYn="N" todos={todos} updateTaskList ={updateTaskList}></TaskList>
+        <TaskList id="important" todos={todos} updateTaskList ={updateTaskList}/>
+
+        {/*<TaskList id="normal" importYn="N" todos={todos} updateTaskList ={updateTaskList}></TaskList>*/}
       </Container>
   );
 }
@@ -115,7 +122,6 @@ function TaskList({id, importYn, todos, updateTaskList}) {
 
   const onDragEnd = (result) => {
     if (!result.destination) return;
-    console.log('result ? ', result);
     // console.log("::column::",column)
     let newTodoList = [...todos]
     // 드래그 결과
@@ -126,20 +132,20 @@ function TaskList({id, importYn, todos, updateTaskList}) {
     const sourceData = todos[source.index];
 
     if(source.droppableId !== destination.droppableId){
-      console.log("::importYn::",importYn)
+      //import 넘기는 로직 추가
+      console.log("import 변화해야함")
+
+    }else{
+      const [reorderedItem] = newTodoList.splice(source.index, 1);
+      newTodoList.splice(destination.index, 0, reorderedItem);
     }
 
-    // console.log("::onDragEnd::")
-    const [reorderedItem] = newTodoList.splice(source.index, 1);
-    newTodoList.splice(destination.index, 0, reorderedItem);
-
     updateTaskList(newTodoList)
-    //드래그 끝나면 할일
-    console.log("::onDragEnd::")
+
   }
   const onDragStart = () => {
     //드래그 시작하면 할일
-    console.log("::onDragStart::")
+    //console.log("::onDragStart::")
   }
     function saveTask(importYn = 'N'){
         let params = {
@@ -190,38 +196,70 @@ function TaskList({id, importYn, todos, updateTaskList}) {
             }
         })
     }
+
+  const [importantList, seImportantList] = useState([
+    { id: 0, value: 'Y' },
+    { id: 1, value: 'N' },
+  ]);
   return (
 
       <Container sx={{ m: 10 }}>
         <Box className={MainStyles['task']} >
-          <Box className={MainStyles['add']}>
-            <span onClick={(e)=>saveTask()}><AddIcon/></span>
-          </Box>
             <DragDropContext
                 droppableId={importYn}
                 onDragEnd={onDragEnd}
                 onDragStart={onDragStart}
             >
-              <Droppable droppableId={importYn} key="cards" direction="horizontal">
-                {(provided, snapshot) => (
-                  <div className="cards" {...provided.droppableProps} ref={provided.innerRef} >
-                      {todos.map((item, index)  =>
-                        <Draggable draggableId={item.taskId} index={index} id={item.taskId} key={item.taskId}>
-                          {(provided, snapshot) =>
-                              <span className={MainStyles['card']} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                                {<Task
-                                    modeProps={item.viewMode}
-                                    taskInfoProps={item}
-                                />}
-                              </span>
-                          }
-                        </Draggable>
-                    )}
-                    {provided.placeholder}
-                  </div>
+              <div>
+                <Droppable droppableId="important" type="droppableItem">
+                  {(provided) => (
+                      <div ref={provided.innerRef}>
+                        {importantList.map((importItem, index) => (
+                            <Draggable
+                                draggableId={importItem.value} id={importItem.value} key={importItem.value} index={index}
+                            >
+                              {(parentProvider) => (
+                                  <div
+                                      ref={parentProvider.innerRef}
+                                      {...parentProvider.draggableProps}
+                                      {...parentProvider.dragHandleProps}
+                                  >
+                                    <Box className={MainStyles['add']}>
+                                      <span onClick={(e)=>saveTask()}><AddIcon/></span>
+                                    </Box>
+                                    <Droppable droppableId={importItem.value} key="cards" direction="horizontal">
+                                      {(provided, snapshot) => (
+                                          <div className="cards" {...provided.droppableProps}  ref={provided.innerRef} >
+                                            {todos
+                                            .filter((item) => item.importYn === importItem.value)
+                                            .map((item, index)  =>
+                                              <Draggable draggableId={item.taskId} index={index} id={item.taskId} key={item.taskId}>
+                                                {(provided, snapshot) =>
+                                                    <span className={MainStyles['card']} ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                      {<Task
+                                                          modeProps={item.viewMode}
+                                                          taskInfoProps={item}
+                                                      />}
+                                                    </span>
+                                                }
+                                              </Draggable>
+                                            )}
+                                            {provided.placeholder}
+                                          </div>
+                                      )}
+                                    </Droppable>
 
-                )}
-              </Droppable>
+                                </div>
+                                )}
+                            </Draggable>
+                        ))}
+
+                        {provided.placeholder}
+                      </div>
+                  )}
+                </Droppable>
+              </div>
+
             </DragDropContext>
         </Box>
       </Container>
