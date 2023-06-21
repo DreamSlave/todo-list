@@ -22,7 +22,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "start-seny": "export PORT=3100 && react-scripts start",
+    "start-jinmi": "export PORT=3200 && react-scripts start",
+    "start-dohvely": "export PORT=3300 && react-scripts start"
   },
   "eslintConfig": {
     "extends": [
