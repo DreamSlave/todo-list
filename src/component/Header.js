@@ -37,9 +37,10 @@ function Header() {
         }
     }
     return (
-        <div>
+        <div className={'w100'}>
             <input
-                className={HeaderStyles['no-border']}
+                className={HeaderStyles['no-border'] + ' w90'}
+                style={{ paddingLeft:'30px'}}
                 placeholder={'꿈을 입력해보세요.'}
                 defaultValue={headLine}
                 onBlur={(e)=>{
