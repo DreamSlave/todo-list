@@ -74,7 +74,7 @@ function First() {
   return (
       <div>
         <div>
-          <div className={'w50 center '}>
+          <div className={'w50'} style={{ margin :'auto', paddingTop: '10%'}}>
             <span className={'font60 pdb10' + firstStyles['fit']}>첫번째 할 일을 기록해보세요!</span>
             <Card sx={{ width : '100%', marginTop : '10px' }}>
               <div className={'light_yellow pd30'}>
@@ -120,8 +120,8 @@ function First() {
               </div>
             </Card>
           </div>
-          <div className={styles['empty']}>
-            <button className={'mgl20 mgr20 ' + styles['orange']} onClick={(e)=>saveTask()}>입장하기</button>
+          <div className={styles['empty'] + ' mgt20'}>
+            <button className={styles['orange']} style={{ margin : "auto"}} onClick={(e)=>saveTask()}>입장하기</button>
           </div>
         </div>
       </div>

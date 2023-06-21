@@ -12,11 +12,11 @@ ApiUtil.init()
 function App() {
   return (
       <div className={styles['frame0']}>
-          {/*<div className={styles['group16']}>*/}
-          {/*    <div className={styles['navi']}>*/}
-          {/*        <Header />*/}
-          {/*    </div>*/}
-          {/*</div>*/}
+          <div className={'w100'}>
+              <div className={styles['navi']}>
+                  <Header />
+              </div>
+          </div>
 
         <BrowserRouter>
           <Routes>
