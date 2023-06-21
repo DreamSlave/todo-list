@@ -31,7 +31,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 ); */
 
 
-function BasicCard({ modeProps, taskInfoProps }) {
+function Task({ modeProps, taskInfoProps }) {
   
   const [mode, setMode] = useState(modeProps ?? 'VIEW')
   const [task, setTask] = useState(taskInfoProps)
@@ -50,6 +50,19 @@ function BasicCard({ modeProps, taskInfoProps }) {
       },
       complete: {
         main: '#0C2426'
+      }
+    },
+  })
+
+  const bodyTheme = createTheme({
+    typography: {
+      h5: {},
+      body2: {
+        color: 'white'
+      },
+      body3: {
+        whiteSpace: 'pre-line',
+        margin: 'auto'
       }
     }
   })
@@ -124,7 +137,6 @@ function BasicCard({ modeProps, taskInfoProps }) {
     }
     ApiUtil.delete(`${ApiConfig.notionDomain}/v1/blocks/${task.taskId}`, params).then(res => {
       // TODO: parent component에 noti 해줘야 함
-      alert('삭제되었습니다.')
     })
   }
 
@@ -156,36 +168,15 @@ function BasicCard({ modeProps, taskInfoProps }) {
   }
 
   return (
-    <Card sx={{ minWidth: 275, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7' : task.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
+    <Card sx={{ minWidth: 375, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7' : task.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
       <CardContent>
         {/* header */}
-        {/* <Box sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'left',
-          '& > *': { m: 10 }
-        }}
-        > */}
         <ThemeProvider theme={statusButtonTheme}>
-          <ButtonGroup variant="contained" size="medium" area-label="outlined button group">
+          <ButtonGroup variant="contained" size="medium" area-label="outlined button group" sx={{ float: 'left' }}>
             <Button key="대기" color="waiting" onClick={changeStatus}>대기</Button>
             <Button key="진행" color="processing" onClick={changeStatus}>진행</Button>
             <Button key="완료" color="complete" sx={{ color: 'white' }} onClick={changeStatus}>완료</Button>
           </ButtonGroup>
-          {/* <ButtonGroup variant="text" size="medium" area-label="text button group" sx={{ textAlign: 'right', marginLeft: '1.5em' }}>
-            <Button key="editButton" color="waiting">
-              <img  alt="Ellipse73218"
-                    src={TaskEditImg}
-                    className={styles['ellipse71']}
-              />
-            </Button>
-            <Button key="deleteButton" color="complete">
-              <img  alt="Ellipse83218"
-                    src={TaskCloseImg}
-                    className={styles['ellipse81']}
-              />
-            </Button>
-          </ButtonGroup> */}
 
           <Stack direction="row" spacing={0} sx={{ width: '100%' }} justifyContent="flex-end">
             {mode === 'VIEW' ?
@@ -211,23 +202,25 @@ function BasicCard({ modeProps, taskInfoProps }) {
         </ThemeProvider>
 
         {/* body */}
-        <Typography variant="h5" component="div">
-          {/* be{bull}nev{bull}o{bull}lent */}
-          {mode === 'VIEW' ?
-              task.title :
-              <input type="text" value={task.title} onChange={(e) => changeTask(e, 'title')} />    
-          }
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {task.registDt ? task.registDt.substring(0,10) : task.registDt}
-        </Typography>
-        <Typography variant="body2">
-          {mode === 'VIEW' ?
-              task.contents :
-              <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} />
-          }
-          <br />
-        </Typography>
+        <ThemeProvider theme={bodyTheme}>
+          <Typography sx={{ textAlign: 'left' }} variant="h5" component="div">
+            {/* be{bull}nev{bull}o{bull}lent */}
+            {mode === 'VIEW' ?
+                task.title :
+                <input type="text" value={task.title} onChange={(e) => changeTask(e, 'title')} />    
+            }
+          </Typography>
+          <Typography sx={{ mb: 1.5, textAlign: 'left' }} variant="body2">
+            {task.registDt ? task.registDt.substring(0,10) : task.registDt}
+          </Typography>
+          <Typography sx={{ textAlign: 'left' }} variant="body3">
+            {mode === 'VIEW' ?
+                task.contents :
+                <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} />
+              }
+            <br />
+          </Typography>
+        </ThemeProvider>
       </CardContent>
 
       {/* bottom */}
@@ -248,11 +241,11 @@ function BasicCard({ modeProps, taskInfoProps }) {
   );
 }
 
-BasicCard.propTypes = {
+Task.propTypes = {
   modeProps: PropTypes.string,
   taskInfoProps: PropTypes.object
 }
-BasicCard.defaultProps = {
+Task.defaultProps = {
   modeProps: 'VIEW',
   taskInfoProps: {
     taskId: '',
@@ -265,4 +258,4 @@ BasicCard.defaultProps = {
   }
 }
 
-export default BasicCard
+export default Task
