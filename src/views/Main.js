@@ -38,18 +38,23 @@ async function getTaskList() {
     })
     return taskArray
 }
+
 function Main() {
 
   let [todos, setTodos] = useState([])
+  let [tags, setTags] = useState([])
 
   const [enabled, setEnabled] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
-            setTodos( await getTaskList())
+          const result = await getTaskList()
+          setTodos( result)
+          setTags( result.filter(item => item.category !== undefined).map(item => {return {category : item.category}}))
+          setEnabled(true);
         }
         fetchData();
-      setEnabled(true);
+
     },[]);
 
   function updateTaskList (result){
@@ -59,11 +64,12 @@ function Main() {
     return null;
   }
 
+
   return (
       <Container sx={{textAlign: 'center'}} maxWidth={false}>
         <Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >
         </Box>
-        <SearchBar>
+        <SearchBar tags={tags}  todos={todos} updateTaskList ={updateTaskList}>
         </SearchBar>
         <TaskList id="important" todos={todos} updateTaskList ={updateTaskList}/>
 
@@ -71,7 +77,12 @@ function Main() {
       </Container>
   );
 }
-function SearchTag(){
+function SearchTag({tags, todos, updateTaskList}){
+  function chipFilter(item){
+    const result = todos.filter(todo => todo.category === item.category)
+    console.log(":result",result)
+    updateTaskList(result)
+  }
   return (
       <Box
           p={2}
@@ -79,20 +90,28 @@ function SearchTag(){
             height: 31,
           }}
       >
-        <Chip label="Chip Filled" />
-        <Chip label="Chip Outlined" variant="outlined" />
-        <Chip label="Chip Filled" />
-        <Chip label="Chip Outlined" variant="outlined" />
-        <Chip label="Chip Outlined" variant="outlined" />
+
+        {tags.map((element, index) =>(
+            <Chip label={element.category} onClick={() => chipFilter(element)} key={index} clickable />
+          ))}
+        {/*<Chip label="Chip Filled" />*/}
+        {/*<Chip label="Chip Outlined" variant="outlined" />*/}
+        {/*<Chip label="Chip Filled" />*/}
+        {/*<Chip label="Chip Outlined" variant="outlined" />*/}
+        {/*<Chip label="Chip Outlined" variant="outlined" />*/}
       </Box>
   );
 }
-function SearchBar() {
+function SearchBar({tags, todos, updateTaskList}) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
+  function onClickClear(){
+    console.log("todos",todos)
+    updateTaskList(todos)
+  }
 
   return (
       <Container maxWidth="md" sx={{ m: 10 }}>
@@ -111,8 +130,9 @@ function SearchBar() {
               ),
             }}
         />
-        <Button variant="Search">Contained</Button>
-        <SearchTag></SearchTag>
+        <Button variant="Search">검색</Button>
+        <Button variant="Clear" onClick={onClickClear}>초기화</Button>
+        <SearchTag tags={tags} todos={todos} updateTaskList ={updateTaskList}></SearchTag>
       </Container>
   );
 }
