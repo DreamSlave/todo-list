@@ -157,9 +157,6 @@ function BasicCard({ modeProps, taskInfoProps }) {
 
   return (
     <Card sx={{ minWidth: 275, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7' : task.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
-
-      mode ::: {mode}
-      
       <CardContent>
         {/* header */}
         {/* <Box sx={{
@@ -222,7 +219,7 @@ function BasicCard({ modeProps, taskInfoProps }) {
           }
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {task.registDt}
+          {task.registDt ? task.registDt.substring(0,10) : task.registDt}
         </Typography>
         <Typography variant="body2">
           {mode === 'VIEW' ?
@@ -241,7 +238,11 @@ function BasicCard({ modeProps, taskInfoProps }) {
               src={FireTaskImg}
               className={styles['ellipse81']}
           />}
-        {categoryInputMode ? <input type="text" value={task.category} className={styles['input-cate']} onChange={(e) => changeTask(e, 'category')} onBlur={blurCategory} /> : <Chip label={task.category} variant="outlined" onClick={clickCategory} />}
+        {categoryInputMode ? 
+          <input type="text" value={task.category} className={styles['input-cate']} onChange={(e) => changeTask(e, 'category')} onKeyPress={(e) => {
+            if(e.key === 'Enter') { blurCategory(e) }
+          }} /> : 
+          <Chip label={task.category} variant="outlined" onClick={clickCategory} />}
       </CardActions>
     </Card>
   );
@@ -254,13 +255,12 @@ BasicCard.propTypes = {
 BasicCard.defaultProps = {
   modeProps: 'VIEW',
   taskInfoProps: {
-    // taskId: '',
-    taskId: '1f13178d70d34c11b794e8043aaf11c0',
+    taskId: '',
     status: '대기',
-    title: 'sss',
+    title: '',
     registDt: '',
-    contents: 'sssss',
-    category: 'saa',
+    contents: '',
+    category: '',
     importYn: 'N',
   }
 }
