@@ -8,8 +8,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Chip } from "@mui/material";
 import TaskEditImg from '../assets/imgs/edit_task.png'
-import TaskCloseImg from '../assets/imgs/close_task.png'
+import TaskDeleteImg from '../assets/imgs/delete_task.png'
 import TaskConfirmImg from '../assets/imgs/confirm_task.png'
+import TaskCancelImg from '../assets/imgs/close_task.png'
 import FireTaskImg from '../assets/imgs/fire_task.png'
 import styles from '../assets/css/Task.module.css'
 import { PropTypes } from 'prop-types';
@@ -96,6 +97,11 @@ function Task({ modeProps, taskInfoProps }) {
     if(mode === 'VIEW') {
       setMode('EDIT')
     } else {
+
+      //test
+      console.log(`aaa`)
+      return false
+
       let params = {
         parent : {
           database_id: `${ApiConfig.mainDataBaseId}`
@@ -126,7 +132,7 @@ function Task({ modeProps, taskInfoProps }) {
         setMode('VIEW')
       })
     }
-  }
+  } 
 
   // 진행상태 삭제 함수
   const deleteTask = function(e) {
@@ -180,24 +186,34 @@ function Task({ modeProps, taskInfoProps }) {
 
           <Stack direction="row" spacing={0} sx={{ width: 'auto' }} justifyContent="flex-end">
             {mode === 'VIEW' ?
-              <IconButton aria-label="edit" onClick={changeMode}>
-                <img  alt="Ellipse73218"
-                      src={TaskEditImg}
-                      className={styles['ellipse91']}
-                />
-              </IconButton> :
-              <IconButton aria-label="edit" onClick={changeMode}>
-                <img  src={TaskConfirmImg}
-                      className={styles['ellipse91']}
-                />
-              </IconButton>
+              <Box>
+                <IconButton aria-label="edit" onClick={changeMode}>
+                  <img  alt="Ellipse73218"
+                        src={TaskEditImg}
+                        className={styles['ellipse91']}
+                  />
+                </IconButton>
+                <IconButton aria-label="delete" onClick={deleteTask}>
+                  <img  alt="Ellipse83218"
+                        src={TaskDeleteImg}
+                        className={styles['ellipse91']}
+                  />
+                </IconButton>
+              </Box> :
+              <Box>
+                <IconButton aria-label="edit" onClick={changeMode}>
+                  <img  src={TaskConfirmImg}
+                        className={styles['ellipse91']}
+                  />
+                </IconButton>
+                <IconButton aria-label="cancel" onClick={changeMode}>
+                  <img  alt="Ellipse83218"
+                        src={TaskCancelImg}
+                        className={styles['ellipse91']}
+                  />
+                </IconButton>
+              </Box>
             }
-            <IconButton aria-label="delete" onClick={deleteTask}>
-              <img  alt="Ellipse83218"
-                    src={TaskCloseImg}
-                    className={styles['ellipse91']}
-              />
-            </IconButton>
           </Stack>
         </ThemeProvider>
 
