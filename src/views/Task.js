@@ -178,7 +178,7 @@ function Task({ modeProps, taskInfoProps }) {
             <Button key="완료" color="complete" sx={{ color: 'white' }} onClick={changeStatus}>완료</Button>
           </ButtonGroup>
 
-          <Stack direction="row" spacing={0} sx={{ width: '100%' }} justifyContent="flex-end">
+          <Stack direction="row" spacing={0} sx={{ width: 'auto' }} justifyContent="flex-end">
             {mode === 'VIEW' ?
               <IconButton aria-label="edit" onClick={changeMode}>
                 <img  alt="Ellipse73218"
@@ -232,9 +232,12 @@ function Task({ modeProps, taskInfoProps }) {
               className={styles['ellipse81']}
           />}
         {categoryInputMode ? 
-          <input type="text" value={task.category} className={styles['input-cate']} onChange={(e) => changeTask(e, 'category')} onKeyPress={(e) => {
-            if(e.key === 'Enter') { blurCategory(e) }
-          }} /> : 
+          <input type="text" value={task.category} className={styles['input-cate']} onChange={(e) => changeTask(e, 'category')} onBlur={(e) => 
+            { 
+              // e.stopPropagation()
+              blurCategory(e)
+             }
+          } /> : 
           <Chip label={task.category} variant="outlined" onClick={clickCategory} />}
       </CardActions>
     </Card>
@@ -248,7 +251,7 @@ Task.propTypes = {
 Task.defaultProps = {
   modeProps: 'VIEW',
   taskInfoProps: {
-    taskId: '',
+    taskId: '', // 3bb2accedf7441fd8a586ff44c561db3
     status: '대기',
     title: '',
     registDt: '',
