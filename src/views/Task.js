@@ -46,10 +46,10 @@ function Task({ modeProps, taskInfoProps }) {
         main: '#F5E8C0'
       },
       processing: {
-        main: '#297CA7'
+        main: '#297CA7CC'
       },
       complete: {
-        main: '#0C2426'
+        main: '#0C24267F'
       }
     },
   })
@@ -168,7 +168,7 @@ function Task({ modeProps, taskInfoProps }) {
   }
 
   return (
-    <Card sx={{ minWidth: 375, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7' : task.status === '완료' ? '#0C2426' : '#FFFFFF') }}>
+    <Card sx={{ minWidth: 375, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7CC' : task.status === '완료' ? '#0C24267F' : '#FFFFFF') }}>
       <CardContent>
         {/* header */}
         <ThemeProvider theme={statusButtonTheme}>
