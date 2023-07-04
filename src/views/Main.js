@@ -39,6 +39,13 @@ async function getTaskList() {
     return taskArray
 }
 
+async function fetchData(setTodos, setTags, setEnabled) {
+  const result = await getTaskList()
+  setTodos( result)
+  setTags( result.filter(item => item.category !== undefined).map(item => {return {category : item.category}}))
+  setEnabled(true);
+}
+
 function Main() {
 
   let [todos, setTodos] = useState([])
@@ -47,14 +54,7 @@ function Main() {
   const [enabled, setEnabled] = useState(false);
 
     useEffect(() => {
-        async function fetchData() {
-          const result = await getTaskList()
-          setTodos( result)
-          setTags( result.filter(item => item.category !== undefined).map(item => {return {category : item.category}}))
-          setEnabled(true);
-        }
-        fetchData();
-
+        fetchData(setTodos, setTags, setEnabled);
     },[]);
 
   function updateTaskList (result){
@@ -67,9 +67,9 @@ function Main() {
 
   return (
       <Container sx={{textAlign: 'center'}} maxWidth={false}>
-        <Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >
-        </Box>
-        <SearchBar tags={tags}  todos={todos} updateTaskList ={updateTaskList}>
+        {/*<Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >*/}
+        {/*</Box>*/}
+        <SearchBar tags={tags}  todos={todos} updateTaskList ={updateTaskList} setTodos={setTodos} setTags={setTags} setEnabled={setEnabled}>
         </SearchBar>
         <TaskList id="important" todos={todos} updateTaskList ={updateTaskList}/>
 
@@ -80,7 +80,6 @@ function Main() {
 function SearchTag({tags, todos, updateTaskList}){
   function chipFilter(item){
     const result = todos.filter(todo => todo.category === item.category)
-    console.log(":result",result)
     updateTaskList(result)
   }
   return (
@@ -102,15 +101,26 @@ function SearchTag({tags, todos, updateTaskList}){
       </Box>
   );
 }
-function SearchBar({tags, todos, updateTaskList}) {
+function SearchBar({tags, todos, updateTaskList, setTodos, setTags, setEnabled}) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
   function onClickClear(){
-    console.log("todos",todos)
-    updateTaskList(todos)
+    fetchData(setTodos, setTags, setEnabled)
+    setSearchTerm("")
+  }
+  const handleKeyPress = e => {
+    if(e.key === 'Enter') {
+      const result = todos.filter(todo => (todo.title.includes(searchTerm)  || todo.contents.includes(searchTerm)))
+      updateTaskList(result)
+    }
+  }
+  function onClickSearch(){
+    const result = todos.filter(todo => (todo.title.includes(searchTerm)  || todo.contents.includes(searchTerm)))
+    updateTaskList(result)
   }
 
   return (
@@ -121,6 +131,7 @@ function SearchBar({tags, todos, updateTaskList}) {
             label="Search"
             value={searchTerm}
             onChange={handleChange}
+            onKeyPress={handleKeyPress}
             sx={{ width: 600 }}
             InputProps={{
               endAdornment: (
@@ -130,7 +141,7 @@ function SearchBar({tags, todos, updateTaskList}) {
               ),
             }}
         />
-        <Button variant="Search">검색</Button>
+        <Button variant="Search" onClick={onClickSearch}>검색</Button>
         <Button variant="Clear" onClick={onClickClear}>초기화</Button>
         <SearchTag tags={tags} todos={todos} updateTaskList ={updateTaskList}></SearchTag>
       </Container>
