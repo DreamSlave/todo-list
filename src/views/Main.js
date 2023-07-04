@@ -66,7 +66,7 @@ function Main() {
 
 
   return (
-      <Container sx={{textAlign: 'center'}} maxWidth={false}>
+      <div style={{textAlign: 'center', width : '100%' }}>
         {/*<Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >*/}
         {/*</Box>*/}
         <SearchBar tags={tags}  todos={todos} updateTaskList ={updateTaskList} setTodos={setTodos} setTags={setTags} setEnabled={setEnabled}>
@@ -74,7 +74,7 @@ function Main() {
         <TaskList id="important" todos={todos} updateTaskList ={updateTaskList}/>
 
         {/*<TaskList id="normal" importYn="N" todos={todos} updateTaskList ={updateTaskList}></TaskList>*/}
-      </Container>
+      </div>
   );
 }
 function SearchTag({tags, todos, updateTaskList}){
@@ -83,10 +83,12 @@ function SearchTag({tags, todos, updateTaskList}){
     updateTaskList(result)
   }
   return (
-      <Box
-          p={2}
-          sx={{
-            height: 31,
+      <div
+          style={{
+            height: '31px',
+            padding: '10px',
+            textAlign:'left',
+            marginLeft:'50px'
           }}
       >
 
@@ -98,7 +100,7 @@ function SearchTag({tags, todos, updateTaskList}){
         {/*<Chip label="Chip Filled" />*/}
         {/*<Chip label="Chip Outlined" variant="outlined" />*/}
         {/*<Chip label="Chip Outlined" variant="outlined" />*/}
-      </Box>
+      </div>
   );
 }
 function SearchBar({tags, todos, updateTaskList, setTodos, setTags, setEnabled}) {
@@ -233,14 +235,13 @@ function TaskList({id, importYn, todos, updateTaskList}) {
     { id: 1, value: 'N' },
   ]);
   return (
-      <Container sx={{ m: 5 }}>
-        <Box  >
+      <div >
             <DragDropContext
                 droppableId={importYn}
                 onDragEnd={onDragEnd}
                 onDragStart={onDragStart}
             >
-              <div>
+              <div style={{width : '100%'}}>
                 <Droppable droppableId="important" type="droppableItem">
                   {(provided) => (
                       <div ref={provided.innerRef}>
@@ -259,7 +260,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
                                     </Box>
                                     <Droppable droppableId={importItem.value} key="cards" direction="horizontal">
                                       {(provided, snapshot) => (
-                                          <div className="cards" {...provided.droppableProps}  ref={provided.innerRef} >
+                                          <div className={MainStyles['task_inner']}  {...provided.droppableProps}  ref={provided.innerRef} >
                                             {todos
                                             .filter((item) => item.importYn === importItem.value)
                                             .map((item, index)  =>
@@ -291,8 +292,8 @@ function TaskList({id, importYn, todos, updateTaskList}) {
               </div>
 
             </DragDropContext>
-        </Box>
-      </Container>
+
+      </div>
 
   );
 }

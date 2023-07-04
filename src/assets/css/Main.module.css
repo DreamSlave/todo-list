@@ -4,7 +4,7 @@
   width:36px;
   height:250px;
   background-color:#FD966B;
-  margin-top: 25px;
+  margin: 25px;
   border-radius: 7px;
 }
 .add_icon{
@@ -15,27 +15,30 @@
 .task_import {
   display: inline-flex;
   vertical-align: middle;
-  justify-content:space-around;
   text-align: center;
   background-color:#FEE09A;
-  width:1600px;
+  width:90%;
   height:304px;
   margin : 10px;
+}
+.task_inner{
+  white-space: nowrap;
+  overflow: auto;
 }
 
 .task {
   display: inline-flex;
   vertical-align: middle;
-  justify-content:space-around;
   text-align: center;
   background-color:#C0C0C0;
-  width:1600px;
+  width:90%;
   height:304px;
   margin : 10px;
 }
 
 .card {
-  margin-top: 25px;
+  margin-left: 20px;
+  margin-top: 40px;
   display: inline-block;
   text-align: center;
   background-color:#FEE09A;
