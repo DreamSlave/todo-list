@@ -124,7 +124,7 @@ function SearchBar({tags, todos, updateTaskList, setTodos, setTags, setEnabled})
   }
 
   return (
-      <Container maxWidth="md" sx={{ m: 10 }}>
+      <Container maxWidth="md" sx={{ m: 5 }}>
         <TextField
             id="search"
             type="search"
@@ -233,9 +233,8 @@ function TaskList({id, importYn, todos, updateTaskList}) {
     { id: 1, value: 'N' },
   ]);
   return (
-
-      <Container sx={{ m: 10 }}>
-        <Box className={MainStyles['task']} >
+      <Container sx={{ m: 5 }}>
+        <Box  >
             <DragDropContext
                 droppableId={importYn}
                 onDragEnd={onDragEnd}
@@ -250,13 +249,13 @@ function TaskList({id, importYn, todos, updateTaskList}) {
                                 draggableId={importItem.value} id={importItem.value} key={importItem.value} index={index}
                             >
                               {(parentProvider) => (
-                                  <div
+                                  <div className={importItem.value ==='Y' ? MainStyles['task_import'] : MainStyles['task']}
                                       ref={parentProvider.innerRef}
                                       {...parentProvider.draggableProps}
                                       {...parentProvider.dragHandleProps}
                                   >
-                                    <Box className={MainStyles['add']}>
-                                      <span onClick={(e)=>saveTask()}><AddIcon/></span>
+                                    <Box className={MainStyles['add']} >
+                                      <span className={MainStyles['add_icon']}  onClick={(e)=>saveTask()}><AddIcon/></span>
                                     </Box>
                                     <Droppable droppableId={importItem.value} key="cards" direction="horizontal">
                                       {(provided, snapshot) => (
