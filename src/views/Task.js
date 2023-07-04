@@ -98,9 +98,10 @@ function Task({ modeProps, taskInfoProps }) {
       setMode('EDIT')
     } else {
 
-      //test
-      console.log(`aaa`)
-      return false
+      if(e.target.parentElement.ariaLabel === 'cancel') {
+        setMode('VIEW')
+        return
+      }
 
       let params = {
         parent : {
