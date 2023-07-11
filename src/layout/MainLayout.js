@@ -5,17 +5,24 @@ import ApiConfig from "../api/api.config";
 import {Outlet, useNavigate} from "react-router-dom";
 import styles from "../assets/css/App.module.css";
 import Header from "../component/Header";
+import {useEffect} from "react";
 
 function MainLayout() {
 
     const movePage = useNavigate();
-    // ApiUtil.post(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}/query`).then(function (response) {
-    //     if (response.status === 200) {
-    //         if(response.data.results.length > 0){
-    //             movePage('/main');
-    //         }
-    //     }
-    // })
+
+    useEffect(() => {
+        ApiUtil.post(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}/query`).then(function (response) {
+            if (response.status === 200) {
+                if(response.data.results.length > 0){
+                    movePage('/main');
+                }else {
+                    movePage('/first');
+                }
+            }
+        })
+    },[]);
+
 
     return (
         <div>
