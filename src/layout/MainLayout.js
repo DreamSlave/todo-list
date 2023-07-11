@@ -9,13 +9,13 @@ import Header from "../component/Header";
 function MainLayout() {
 
     const movePage = useNavigate();
-    ApiUtil.post(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}/query`).then(function (response) {
-        if (response.status === 200) {
-            if(response.data.results.length > 0){
-                movePage('/main');
-            }
-        }
-    })
+    // ApiUtil.post(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}/query`).then(function (response) {
+    //     if (response.status === 200) {
+    //         if(response.data.results.length > 0){
+    //             movePage('/main');
+    //         }
+    //     }
+    // })
 
     return (
         <div>
