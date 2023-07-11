@@ -1,33 +1,19 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import './assets/css/App.module.css';
 import styles from './assets/css/App.module.css'
-import First from "./views/First";
-import Task from "./views/Task";
-import Main from "./views/Main"; //모듈 스타일 import
-
+// import Routes from "./route/Router.js";
 import ApiUtil from "./api/api.util.js";
+
+import {Outlet, RouterProvider} from 'react-router-dom';
 import Header from "./component/Header";
+import router from "./route/Router";
 ApiUtil.init()
 function App() {
   return (
       <div className={styles['frame0']}>
-          <div className={'w100'}>
-              <div className={styles['navi']}>
-                  <Header />
-              </div>
-          </div>
-
-        <BrowserRouter>
-          <Routes>
-            <Route path="/first" element={<First />}></Route>
-            <Route path="/main" element={<Main />}></Route>
-            <Route path="/task" element={<Task />}></Route>
-          </Routes>
-            <Link to="/first">FirstLayout</Link><br/><br/>
-            <Link to="/main">MainLayout</Link><br/><br/>
-            <Link to="/task">Task</Link>
-        </BrowserRouter>
+          <React.StrictMode>
+              <RouterProvider router={router} />
+          </React.StrictMode>,
       </div>
   );
 }
