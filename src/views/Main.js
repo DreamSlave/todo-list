@@ -152,10 +152,10 @@ function SearchBar({tags, todos, updateTaskList, setTodos, setTags, setEnabled})
 
 
 function TaskList({id, importYn, todos, updateTaskList}) {
-
+  const [task, setTask] = useState({})
   const onDragEnd = (result) => {
     if (!result.destination) return;
-    // console.log("::column::",column)
+    console.log("::result::",result)
     let newTodoList = [...todos]
     // 드래그 결과
     // source : 원본
@@ -163,10 +163,27 @@ function TaskList({id, importYn, todos, updateTaskList}) {
     const { destination, source } = result;
 
     const sourceData = todos[source.index];
+    console.log("::newTodoList",newTodoList);
+
 
     if(source.droppableId !== destination.droppableId){
       //import 넘기는 로직 추가
-      console.log("import 변화해야함")
+      let params = {
+        parent : {
+          database_id: `${ApiConfig.mainDataBaseId}`
+        },
+        properties : {
+          importYn: {
+            select: {
+              name: importYn,
+            }
+          },
+        }
+      }
+      ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${result.draggableId}`, params).then(res =>{
+        
+        const data = newTodoList.find(item => item.taskId === result.draggableId)
+      })
 
     }else{
       const [reorderedItem] = newTodoList.splice(source.index, 1);
@@ -179,6 +196,9 @@ function TaskList({id, importYn, todos, updateTaskList}) {
   const onDragStart = () => {
     //드래그 시작하면 할일
     //console.log("::onDragStart::")
+  }
+  const changeTask = function(taskId, importYn) {
+    
   }
     function saveTask(importYn){
         let params = {
@@ -271,6 +291,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
                                                           modeProps={item.viewMode}
                                                           taskInfoProps={item}
                                                       />}
+                                                      {index}
                                                     </span>
                                                 }
                                               </Draggable>
