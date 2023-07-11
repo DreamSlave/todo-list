@@ -180,7 +180,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
     //드래그 시작하면 할일
     //console.log("::onDragStart::")
   }
-    function saveTask(importYn = 'N'){
+    function saveTask(importYn){
         let params = {
             parent : {
                 database_id: `${ApiConfig.mainDataBaseId}`
@@ -256,7 +256,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
                                       {...parentProvider.dragHandleProps}
                                   >
                                     <Box className={MainStyles['add']} >
-                                      <span className={MainStyles['add_icon']}  onClick={(e)=>saveTask()}><AddIcon/></span>
+                                      <span className={MainStyles['add_icon']}  onClick={(e)=>saveTask(importItem.value )}><AddIcon/></span>
                                     </Box>
                                     <Droppable droppableId={importItem.value} key="cards" direction="horizontal">
                                       {(provided, snapshot) => (
