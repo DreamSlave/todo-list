@@ -2,21 +2,43 @@
   vertical-align: middle;
   text-align: center;
   width:36px;
-  height:50px;
+  height:250px;
   background-color:#FD966B;
+  margin: 25px;
+  border-radius: 7px;
+}
+.add_icon{
+  display: inline-block;
+  margin-top: 110px;
+}
+
+.task_import {
+  display: inline-flex;
+  vertical-align: middle;
+  text-align: center;
+  background-color:#FEE09A;
+  width:90%;
+  height:304px;
+  margin : 10px;
+}
+.task_inner{
+  white-space: nowrap;
+  overflow: auto;
 }
 
 .task {
   display: inline-flex;
   vertical-align: middle;
-  justify-content:space-around;
   text-align: center;
-  background-color:#FEE09A;
-  width:1600px;
+  background-color:#C0C0C0;
+  width:90%;
   height:304px;
+  margin : 10px;
 }
 
 .card {
+  margin-left: 20px;
+  margin-top: 40px;
   display: inline-block;
   text-align: center;
   background-color:#FEE09A;

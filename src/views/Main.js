@@ -39,6 +39,13 @@ async function getTaskList() {
     return taskArray
 }
 
+async function fetchData(setTodos, setTags, setEnabled) {
+  const result = await getTaskList()
+  setTodos( result)
+  setTags( result.filter(item => item.category !== undefined).map(item => {return {category : item.category}}))
+  setEnabled(true);
+}
+
 function Main() {
 
   let [todos, setTodos] = useState([])
@@ -47,14 +54,7 @@ function Main() {
   const [enabled, setEnabled] = useState(false);
 
     useEffect(() => {
-        async function fetchData() {
-          const result = await getTaskList()
-          setTodos( result)
-          setTags( result.filter(item => item.category !== undefined).map(item => {return {category : item.category}}))
-          setEnabled(true);
-        }
-        fetchData();
-
+        fetchData(setTodos, setTags, setEnabled);
     },[]);
 
   function updateTaskList (result){
@@ -66,28 +66,29 @@ function Main() {
 
 
   return (
-      <Container sx={{textAlign: 'center'}} maxWidth={false}>
-        <Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >
-        </Box>
-        <SearchBar tags={tags}  todos={todos} updateTaskList ={updateTaskList}>
+      <div style={{textAlign: 'center', width : '100%' }}>
+        {/*<Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >*/}
+        {/*</Box>*/}
+        <SearchBar tags={tags}  todos={todos} updateTaskList ={updateTaskList} setTodos={setTodos} setTags={setTags} setEnabled={setEnabled}>
         </SearchBar>
         <TaskList id="important" todos={todos} updateTaskList ={updateTaskList}/>
 
         {/*<TaskList id="normal" importYn="N" todos={todos} updateTaskList ={updateTaskList}></TaskList>*/}
-      </Container>
+      </div>
   );
 }
 function SearchTag({tags, todos, updateTaskList}){
   function chipFilter(item){
     const result = todos.filter(todo => todo.category === item.category)
-    console.log(":result",result)
     updateTaskList(result)
   }
   return (
-      <Box
-          p={2}
-          sx={{
-            height: 31,
+      <div
+          style={{
+            height: '31px',
+            padding: '10px',
+            textAlign:'left',
+            marginLeft:'50px'
           }}
       >
 
@@ -99,28 +100,40 @@ function SearchTag({tags, todos, updateTaskList}){
         {/*<Chip label="Chip Filled" />*/}
         {/*<Chip label="Chip Outlined" variant="outlined" />*/}
         {/*<Chip label="Chip Outlined" variant="outlined" />*/}
-      </Box>
+      </div>
   );
 }
-function SearchBar({tags, todos, updateTaskList}) {
+function SearchBar({tags, todos, updateTaskList, setTodos, setTags, setEnabled}) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
   };
+
   function onClickClear(){
-    console.log("todos",todos)
-    updateTaskList(todos)
+    fetchData(setTodos, setTags, setEnabled)
+    setSearchTerm("")
+  }
+  const handleKeyPress = e => {
+    if(e.key === 'Enter') {
+      const result = todos.filter(todo => (todo.title.includes(searchTerm)  || todo.contents.includes(searchTerm)))
+      updateTaskList(result)
+    }
+  }
+  function onClickSearch(){
+    const result = todos.filter(todo => (todo.title.includes(searchTerm)  || todo.contents.includes(searchTerm)))
+    updateTaskList(result)
   }
 
   return (
-      <Container maxWidth="md" sx={{ m: 10 }}>
+      <Container maxWidth="md" sx={{ m: 5 }}>
         <TextField
             id="search"
             type="search"
             label="Search"
             value={searchTerm}
             onChange={handleChange}
+            onKeyPress={handleKeyPress}
             sx={{ width: 600 }}
             InputProps={{
               endAdornment: (
@@ -130,7 +143,7 @@ function SearchBar({tags, todos, updateTaskList}) {
               ),
             }}
         />
-        <Button variant="Search">검색</Button>
+        <Button variant="Search" onClick={onClickSearch}>검색</Button>
         <Button variant="Clear" onClick={onClickClear}>초기화</Button>
         <SearchTag tags={tags} todos={todos} updateTaskList ={updateTaskList}></SearchTag>
       </Container>
@@ -167,7 +180,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
     //드래그 시작하면 할일
     //console.log("::onDragStart::")
   }
-    function saveTask(importYn = 'N'){
+    function saveTask(importYn){
         let params = {
             parent : {
                 database_id: `${ApiConfig.mainDataBaseId}`
@@ -222,15 +235,13 @@ function TaskList({id, importYn, todos, updateTaskList}) {
     { id: 1, value: 'N' },
   ]);
   return (
-
-      <Container sx={{ m: 10 }}>
-        <Box className={MainStyles['task']} >
+      <div >
             <DragDropContext
                 droppableId={importYn}
                 onDragEnd={onDragEnd}
                 onDragStart={onDragStart}
             >
-              <div>
+              <div style={{width : '100%'}}>
                 <Droppable droppableId="important" type="droppableItem">
                   {(provided) => (
                       <div ref={provided.innerRef}>
@@ -239,17 +250,17 @@ function TaskList({id, importYn, todos, updateTaskList}) {
                                 draggableId={importItem.value} id={importItem.value} key={importItem.value} index={index}
                             >
                               {(parentProvider) => (
-                                  <div
+                                  <div className={importItem.value ==='Y' ? MainStyles['task_import'] : MainStyles['task']}
                                       ref={parentProvider.innerRef}
                                       {...parentProvider.draggableProps}
                                       {...parentProvider.dragHandleProps}
                                   >
-                                    <Box className={MainStyles['add']}>
-                                      <span onClick={(e)=>saveTask()}><AddIcon/></span>
+                                    <Box className={MainStyles['add']} >
+                                      <span className={MainStyles['add_icon']}  onClick={(e)=>saveTask(importItem.value )}><AddIcon/></span>
                                     </Box>
                                     <Droppable droppableId={importItem.value} key="cards" direction="horizontal">
                                       {(provided, snapshot) => (
-                                          <div className="cards" {...provided.droppableProps}  ref={provided.innerRef} >
+                                          <div className={MainStyles['task_inner']}  {...provided.droppableProps}  ref={provided.innerRef} >
                                             {todos
                                             .filter((item) => item.importYn === importItem.value)
                                             .map((item, index)  =>
@@ -281,8 +292,8 @@ function TaskList({id, importYn, todos, updateTaskList}) {
               </div>
 
             </DragDropContext>
-        </Box>
-      </Container>
+
+      </div>
 
   );
 }
