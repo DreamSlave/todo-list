@@ -155,7 +155,7 @@ function Task({ modeProps, taskInfoProps }) {
     setCategoryInputMode(!categoryInputMode)
   }
 
-  const blurCategory = function(e) {
+  const keyUpCategory = function(e) {
     
     let params = {
       parent : {
@@ -249,10 +249,11 @@ function Task({ modeProps, taskInfoProps }) {
               className={styles['ellipse81']}
           />}
         {categoryInputMode ? 
-          <input type="text" value={task.category} className={styles['input-cate']} onChange={(e) => changeTask(e, 'category')} onBlur={(e) => 
+          <input type="text" value={task.category} className={styles['input-cate']} onChange={(e) => changeTask(e, 'category')} onKeyUp={(e) => 
             { 
-              // e.stopPropagation()
-              blurCategory(e)
+              if((e.keyCode || e.which) === 13) {
+                keyUpCategory(e)
+              }
              }
           } /> : 
           <Chip label={task.category} variant="outlined" onClick={clickCategory} />}
