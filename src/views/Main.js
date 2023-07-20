@@ -42,7 +42,8 @@ async function getTaskList() {
 async function fetchData(setTodos, setTags, setEnabled) {
   const result = await getTaskList()
   setTodos( result)
-  setTags( result.filter(item => item.category !== undefined).map(item => {return {category : item.category}}))
+  let filterTags = result.map(item => item.category).filter(categoryStr => !!categoryStr && categoryStr!=='')
+  setTags( [...new Set(filterTags)] )
   setEnabled(true);
 }
 
@@ -79,7 +80,7 @@ function Main() {
 }
 function SearchTag({tags, todos, updateTaskList}){
   function chipFilter(item){
-    const result = todos.filter(todo => todo.category === item.category)
+    const result = todos.filter(todo => todo.category === item)
     updateTaskList(result)
   }
   return (
@@ -93,7 +94,7 @@ function SearchTag({tags, todos, updateTaskList}){
       >
 
         {tags.map((element, index) =>(
-            <Chip label={element.category} onClick={() => chipFilter(element)} key={index} clickable />
+            <Chip label={element} onClick={() => chipFilter(element)} key={index} clickable />
           ))}
         {/*<Chip label="Chip Filled" />*/}
         {/*<Chip label="Chip Outlined" variant="outlined" />*/}
