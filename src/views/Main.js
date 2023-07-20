@@ -20,7 +20,6 @@ async function getTaskList() {
     let taskArray = []
     await ApiUtil.post(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}/query`).then(function (response) {
         if (response.status === 200) {
-
             response.data.results.forEach(notionTask => {
                 let taskInfo = {
                     viewMode : 'VIEW',
@@ -163,9 +162,6 @@ function TaskList({id, importYn, todos, updateTaskList}) {
     const { destination, source } = result;
 
     const sourceData = todos[source.index];
-    console.log("::newTodoList",newTodoList);
-
-
     if(source.droppableId !== destination.droppableId){
       //import 넘기는 로직 추가
       let params = {
@@ -175,14 +171,14 @@ function TaskList({id, importYn, todos, updateTaskList}) {
         properties : {
           importYn: {
             select: {
-              name: importYn,
+              name: destination.droppableId,
             }
           },
         }
       }
       ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${result.draggableId}`, params).then(res =>{
         
-        const data = newTodoList.find(item => item.taskId === result.draggableId)
+        //const data = newTodoList.find(item => item.taskId === result.draggableId)
       })
 
     }else{
@@ -196,9 +192,6 @@ function TaskList({id, importYn, todos, updateTaskList}) {
   const onDragStart = () => {
     //드래그 시작하면 할일
     //console.log("::onDragStart::")
-  }
-  const changeTask = function(taskId, importYn) {
-    
   }
     function saveTask(importYn){
         let params = {
