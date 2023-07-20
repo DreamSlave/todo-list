@@ -25,7 +25,8 @@
     "build": "react-scripts build",
     "start-seny": "set PORT=3100 && react-scripts start",
     "start-jinmi": "set PORT=3200 && react-scripts start",
-    "start-dohvely": "export PORT=3300 && react-scripts start"
+    "start-dohvely": "export PORT=3300 && react-scripts start",
+    "start-comanjae": "set PORT=3400 && react-scripts start"
   },
   "eslintConfig": {
     "extends": [
