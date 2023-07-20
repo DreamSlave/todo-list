@@ -1,6 +1,6 @@
 const dohvelyId = '1d3367b0c24a4c6a86f48ff03cbc7f01'
 const jinmiId = '6a1b7083a78540c891016615926385fb'
-const senyId = '112b1f0b22a64a50a19fc8aa6ec366f6'
+const senyId = 'a0f4e0896aa6446fa91850778a270f29'
 
 // const mainId = dohvelyId
 // const mainId = jinmiId
