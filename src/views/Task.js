@@ -47,10 +47,12 @@ function Task({ modeProps, taskInfoProps }) {
         main: '#F5E8C0'
       },
       processing: {
-        main: '#297CA7CC'
+        main: '#5490A1'
+        // main: '#297CA7CC'
       },
       complete: {
-        main: '#0C24267F'
+        main: '#798380'
+        // main: '#0C24267F'
       }
     },
   })
@@ -175,8 +177,9 @@ function Task({ modeProps, taskInfoProps }) {
   }
 
   return (
-    <Card sx={{ minWidth: 375, backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7CC' : task.status === '완료' ? '#0C24267F' : '#FFFFFF') }}>
-      <CardContent>
+    <Card sx={{ minWidth: 375, padding : '15px' , boxSizing : 'border-box' , backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#5490A1' : task.status === '완료' ? '#798380' : '#FFFFFF') }}>
+    {/* <Card sx={{ minWidth: 375, padding : '15px' , boxSizing : 'border-box' , backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7CC' : task.status === '완료' ? '#0C24267F' : '#FFFFFF') }}> */}
+      <CardContent sx={{ height: '160px' , padding : '0px'}}>
         {/* header */}
         <ThemeProvider theme={statusButtonTheme}>
           <ButtonGroup variant="contained" size="medium" area-label="outlined button group" sx={{ float: 'left' }}>
@@ -227,10 +230,7 @@ function Task({ modeProps, taskInfoProps }) {
                 <input type="text" value={task.title} onChange={(e) => changeTask(e, 'title')} />    
             }
           </Typography>
-          <Typography sx={{ mb: 1.5, textAlign: 'left' }} variant="body2">
-            {task.registDt ? task.registDt.substring(0,10) : task.registDt}
-          </Typography>
-          <Typography sx={{ textAlign: 'left' }} variant="body3">
+          <Typography sx={{ textAlign: 'left', overflow: 'hidden', overflowY: 'scroll', height: '40%' }} variant="body3" component="div">
             {mode === 'VIEW' ?
                 task.contents :
                 <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} />
@@ -258,6 +258,9 @@ function Task({ modeProps, taskInfoProps }) {
           } /> : 
           <Chip label={task.category} variant="outlined" onClick={clickCategory} />}
       </CardActions>
+      <Typography sx={{ mb: 1.5, display : 'inline-block', float : 'right' , marginRight : '10px' , color : '#bbb' , marginBottom : '0'}} variant="body2">
+            {task.registDt ? task.registDt.substring(0,10) : task.registDt}
+      </Typography>
     </Card>
   );
 }
