@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useContext } from 'react';
+import { MainContext } from './Main'
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -33,13 +34,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 ); */
 
 
-function Task({ modeProps, taskInfoProps, updateTaskList }) {
+function Task({ modeProps, taskInfoProps }) {
   
   const [mode, setMode] = useState(modeProps ?? 'VIEW')
   const [task, setTask] = useState(taskInfoProps)
   const [categoryInputMode, setCategoryInputMode] = useState(false)
+  const { updateTaskList } = useContext(MainContext)
   
-  console.log(`updateTaskList ::: ${updateTaskList}`)
 
   /* React.useEffect(() => {
   }, []) */
