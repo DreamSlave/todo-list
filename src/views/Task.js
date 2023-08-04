@@ -223,14 +223,14 @@ function Task({ modeProps, taskInfoProps }) {
 
         {/* body */}
         <ThemeProvider theme={bodyTheme}>
-          <Typography sx={{ textAlign: 'left' }} variant="h5" component="div">
+        <Typography sx={{ textAlign: 'left' , fontWeight:'600' , letterSpacing:'-1.5px' , marginTop: '5px' , fontSize: '1.3rem' }} variant="h5" component="div">
             {/* be{bull}nev{bull}o{bull}lent */}
             {mode === 'VIEW' ?
                 task.title :
                 <input type="text" value={task.title} onChange={(e) => changeTask(e, 'title')} />    
             }
           </Typography>
-          <Typography sx={{ textAlign: 'left', overflow: 'hidden', overflowY: 'scroll', height: '40%' }} variant="body3" component="div">
+          <Typography sx={{ textAlign: 'left', overflow: 'hidden', overflowY: 'auto', height: '55%' , fontSize:'14px' , wordBreak: 'break-all' , maxWidth: '340px' }} variant="body3" component="div">
             {mode === 'VIEW' ?
                 task.contents :
                 <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} />
