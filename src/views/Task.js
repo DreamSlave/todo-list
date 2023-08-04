@@ -159,7 +159,7 @@ function Task({ modeProps, taskInfoProps }) {
   }
 
   const keyUpCategory = function(e) {
-    
+
     let params = {
       parent : {
         database_id: `${ApiConfig.mainDataBaseId}`
@@ -172,6 +172,11 @@ function Task({ modeProps, taskInfoProps }) {
         },
       }
     }
+
+    if(task.category.trim().length === 0) {
+      params['properties'] = undefined
+    }
+
     ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
       setCategoryInputMode(!categoryInputMode)
     })
@@ -179,7 +184,6 @@ function Task({ modeProps, taskInfoProps }) {
 
   return (
     <Card sx={{ minWidth: 375, height: 260, padding : '15px' , boxSizing : 'border-box' , backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#5490A1' : task.status === '완료' ? '#798380' : '#FFFFFF') }}>
-    {/* <Card sx={{ minWidth: 375, padding : '15px' , boxSizing : 'border-box' , backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7CC' : task.status === '완료' ? '#0C24267F' : '#FFFFFF') }}> */}
       <CardContent sx={{ height: '160px' , padding : '0px'}}>
         {/* header */}
         <ThemeProvider theme={statusButtonTheme}>
@@ -223,14 +227,14 @@ function Task({ modeProps, taskInfoProps }) {
 
         {/* body */}
         <ThemeProvider theme={bodyTheme}>
-          <Typography sx={{ textAlign: 'left' }} variant="h5" component="div">
+        <Typography sx={{ textAlign: 'left' , fontWeight:'600' , letterSpacing:'-1.5px' , marginTop: '5px' , fontSize: '1.3rem' }} variant="h5" component="div">
             {/* be{bull}nev{bull}o{bull}lent */}
             {mode === 'VIEW' ?
                 task.title :
                 <input type="text" value={task.title} onChange={(e) => changeTask(e, 'title')} />    
             }
           </Typography>
-          <Typography sx={{ textAlign: 'left', overflow: 'hidden', overflowY: 'scroll', height: '40%' }} variant="body3" component="div">
+          <Typography sx={{ textAlign: 'left', overflow: 'hidden', overflowY: 'auto', height: '55%' , fontSize:'14px' , wordBreak: 'break-all' , maxWidth: '340px' }} variant="body3" component="div">
             {mode === 'VIEW' ?
                 task.contents :
                 <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} />
@@ -249,12 +253,16 @@ function Task({ modeProps, taskInfoProps }) {
               className={styles['ellipse81']}
           />}
         {categoryInputMode ? 
-          <input type="text" value={task.category} className={styles['input-cate']} onChange={(e) => changeTask(e, 'category')} onKeyUp={(e) => 
-            { 
-              if((e.keyCode || e.which) === 13) {
-                keyUpCategory(e)
-              }
-             }
+          <input  type="text"
+                  maxLength={10}
+                  value={task.category}
+                  className={styles['input-cate']}
+                  onChange={(e) => changeTask(e, 'category')} onKeyUp={(e) => 
+                    { 
+                      if((e.keyCode || e.which) === 13) {
+                        keyUpCategory(e)
+                      }
+                    }
           } /> : 
           <Chip label={task.category} variant="outlined" onClick={clickCategory} />}
       </CardActions>
