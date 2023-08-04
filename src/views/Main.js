@@ -29,7 +29,7 @@ async function getTaskList() {
                     title: notionTask.properties.title.title[0]?.plain_text,
                     registDt: notionTask.properties.registDt.created_time,
                     contents: notionTask.properties.contents.rich_text[0]?.plain_text,
-                    category: notionTask.properties.category.select?.name,
+                    category: notionTask.properties.category.select?.name ?? '',
                     importYn: notionTask.properties.importYn.select?.name,
                     taskIndex : index
                 }
