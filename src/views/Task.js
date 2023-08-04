@@ -253,12 +253,16 @@ function Task({ modeProps, taskInfoProps }) {
               className={styles['ellipse81']}
           />}
         {categoryInputMode ? 
-          <input type="text" value={task.category} className={styles['input-cate']} onChange={(e) => changeTask(e, 'category')} onKeyUp={(e) => 
-            { 
-              if((e.keyCode || e.which) === 13) {
-                keyUpCategory(e)
-              }
-             }
+          <input  type="text"
+                  maxLength={10}
+                  value={task.category}
+                  className={styles['input-cate']}
+                  onChange={(e) => changeTask(e, 'category')} onKeyUp={(e) => 
+                    { 
+                      if((e.keyCode || e.which) === 13) {
+                        keyUpCategory(e)
+                      }
+                    }
           } /> : 
           <Chip label={task.category} variant="outlined" onClick={clickCategory} />}
       </CardActions>
