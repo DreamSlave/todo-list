@@ -21,7 +21,7 @@ async function getTaskList() {
     let taskArray = []
     await ApiUtil.post(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}/query`).then(function (response) {
         if (response.status === 200) {
-            response.data.results.forEach(notionTask => {
+            response.data.results.forEach((notionTask, index) => {
                 let taskInfo = {
                     viewMode : 'VIEW',
                     taskId: notionTask.id,
@@ -30,7 +30,8 @@ async function getTaskList() {
                     registDt: notionTask.properties.registDt.created_time,
                     contents: notionTask.properties.contents.rich_text[0]?.plain_text,
                     category: notionTask.properties.category.select?.name,
-                    importYn: notionTask.properties.importYn.select?.name
+                    importYn: notionTask.properties.importYn.select?.name,
+                    taskIndex : index
                 }
                 taskArray.push(taskInfo)
             })
@@ -60,7 +61,6 @@ function Main() {
   },[]);
 
   function updateTaskList (result){
-    console.log("::::updateTaskList::");
     setTodos(result)
   }
   if (!enabled) {
@@ -75,11 +75,6 @@ function Main() {
           </SearchBar>
           <TaskList id="important" todos={todos} updateTaskList ={updateTaskList}/>
         </MainContext.Provider>
-        {/*<Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >*/}
-        {/*</Box>*/}
-        
-
-        {/*<TaskList id="normal" importYn="N" todos={todos} updateTaskList ={updateTaskList}></TaskList>*/}
       </div>
   );
 }
@@ -101,11 +96,6 @@ function SearchTag({tags, todos, updateTaskList}){
         {tags.map((element, index) =>(
             <Chip label={element} onClick={() => chipFilter(element)} key={index} clickable />
           ))}
-        {/*<Chip label="Chip Filled" />*/}
-        {/*<Chip label="Chip Outlined" variant="outlined" />*/}
-        {/*<Chip label="Chip Filled" />*/}
-        {/*<Chip label="Chip Outlined" variant="outlined" />*/}
-        {/*<Chip label="Chip Outlined" variant="outlined" />*/}
       </div>
   );
 }
@@ -159,6 +149,7 @@ function SearchBar({tags, todos, updateTaskList}) {
 
 
 function TaskList({id, importYn, todos, updateTaskList}) {
+  const { fetchData } = useContext(MainContext);
   const [task, setTask] = useState({})
   const onDragEnd = (result) => {
     if (!result.destination) return;
@@ -185,8 +176,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
         }
       }
       ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${result.draggableId}`, params).then(res =>{
-        
-        //const data = newTodoList.find(item => item.taskId === result.draggableId)
+        fetchData()
       })
 
     }else{
@@ -292,7 +282,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
                                                           modeProps={item.viewMode}
                                                           taskInfoProps={item}
                                                       />}
-                                                      {index}
+                                                      {item.taskIndex}
                                                     </span>
                                                 }
                                               </Draggable>
