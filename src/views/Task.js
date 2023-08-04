@@ -40,7 +40,6 @@ function Task({ modeProps, taskInfoProps }) {
   const [task, setTask] = useState(taskInfoProps)
   const [categoryInputMode, setCategoryInputMode] = useState(false)
   const { fetchData } = useContext(MainContext)
-  
 
   const statusButtonTheme = createTheme({
     palette: {
@@ -273,7 +272,7 @@ Task.propTypes = {
 Task.defaultProps = {
   modeProps: 'VIEW',
   taskInfoProps: {
-    taskId: '', // 3bb2accedf7441fd8a586ff44c561db3
+    taskId: '',
     status: '대기',
     title: '',
     registDt: '',
