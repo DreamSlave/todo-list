@@ -39,26 +39,28 @@ async function getTaskList() {
     return taskArray
 }
 
-async function fetchData(setTodos, setTags, setEnabled) {
-  const result = await getTaskList()
-  setTodos( result)
-  let filterTags = result.map(item => item.category).filter(categoryStr => !!categoryStr && categoryStr!=='')
-  setTags( [...new Set(filterTags)] )
-  setEnabled(true);
-}
 
 function Main() {
 
   let [todos, setTodos] = useState([])
   let [tags, setTags] = useState([])
-
   const [enabled, setEnabled] = useState(false);
 
-    useEffect(() => {
-        fetchData(setTodos, setTags, setEnabled);
-    },[]);
+  async function fetchData() {
+    const result = await getTaskList()
+    setTodos( result)
+    let filterTags = result.map(item => item.category).filter(categoryStr => !!categoryStr && categoryStr!=='')
+    setTags( [...new Set(filterTags)] )
+    setEnabled(true);
+  }
+  
+
+  useEffect(() => {
+      fetchData();
+  },[]);
 
   function updateTaskList (result){
+    console.log("::::updateTaskList::");
     setTodos(result)
   }
   if (!enabled) {
@@ -68,7 +70,7 @@ function Main() {
 
   return (
       <div style={{textAlign: 'center', width : '100%' }}>
-        <MainContext.Provider value={{setTodos, setTags, setEnabled}}>
+        <MainContext.Provider value={{fetchData}}>
           <SearchBar tags={tags}  todos={todos} updateTaskList ={updateTaskList} >
           </SearchBar>
           <TaskList id="important" todos={todos} updateTaskList ={updateTaskList}/>
@@ -108,7 +110,7 @@ function SearchTag({tags, todos, updateTaskList}){
   );
 }
 function SearchBar({tags, todos, updateTaskList}) {
-  const { setTodos, setTags, setEnabled } = useContext(MainContext);
+  const { fetchData } = useContext(MainContext);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (event) => {
@@ -116,7 +118,7 @@ function SearchBar({tags, todos, updateTaskList}) {
   };
 
   function onClickClear(){
-    fetchData(setTodos, setTags, setEnabled)
+    fetchData()
     setSearchTerm("")
   }
   const handleKeyPress = e => {
@@ -199,55 +201,55 @@ function TaskList({id, importYn, todos, updateTaskList}) {
     //드래그 시작하면 할일
     //console.log("::onDragStart::")
   }
-    function saveTask(importYn){
-        let params = {
-            parent : {
-                database_id: `${ApiConfig.mainDataBaseId}`
-            },
-            properties : {
-                title : {
-                    title: [
-                        {
-                            text: {
-                                content: ``
-                            }
-                        }
-                    ]
-                },
-                contents : {
-                    type: "rich_text",
-                    rich_text : [
-                        {
-                            text: {
-                                content : ``
-                            }
-                        }
-                    ]
-                },
-                status : {
-                    select: {
-                        name: `대기`
-                    }
-                },
-                importYn : {
-                    select: {
-                        name: importYn
-                    }
-                }
-            }
-        }
-        ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params).then(async function (response) {
-            if (response.status === 200) {
-                let getUpdateTaskList = await getTaskList()
-                let newTaskId = response.data.id
-                let findIndex = getUpdateTaskList.findIndex(task=>task.taskId===newTaskId)
-                getUpdateTaskList[findIndex].viewMode='EDIT'
-                updateTaskList(getUpdateTaskList)
-            } else {
-                alert('저장실패')
-            }
-        })
-    }
+  function saveTask(importYn){
+      let params = {
+          parent : {
+              database_id: `${ApiConfig.mainDataBaseId}`
+          },
+          properties : {
+              title : {
+                  title: [
+                      {
+                          text: {
+                              content: ``
+                          }
+                      }
+                  ]
+              },
+              contents : {
+                  type: "rich_text",
+                  rich_text : [
+                      {
+                          text: {
+                              content : ``
+                          }
+                      }
+                  ]
+              },
+              status : {
+                  select: {
+                      name: `대기`
+                  }
+              },
+              importYn : {
+                  select: {
+                      name: importYn
+                  }
+              }
+          }
+      }
+      ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params).then(async function (response) {
+          if (response.status === 200) {
+              let getUpdateTaskList = await getTaskList()
+              let newTaskId = response.data.id
+              let findIndex = getUpdateTaskList.findIndex(task=>task.taskId===newTaskId)
+              getUpdateTaskList[findIndex].viewMode='EDIT'
+              updateTaskList(getUpdateTaskList)
+          } else {
+              alert('저장실패')
+          }
+      })
+  }
 
   const [importantList, seImportantList] = useState([
     { id: 0, value: 'Y' },
