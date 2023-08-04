@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, InputAdornment, TextField, Button, Chip, Box} from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from '@mui/icons-material/Add';
 import MainStyles from "../assets/css/Main.module.css";
@@ -15,6 +15,7 @@ import ApiUtil from "../api/api.util";
 import ApiConfig from "../api/api.config";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
+export const MainContext = createContext();
 
 async function getTaskList() {
     let taskArray = []
@@ -67,11 +68,14 @@ function Main() {
 
   return (
       <div style={{textAlign: 'center', width : '100%' }}>
+        <MainContext.Provider value={{setTodos, setTags, setEnabled}}>
+          <SearchBar tags={tags}  todos={todos} updateTaskList ={updateTaskList} >
+          </SearchBar>
+          <TaskList id="important" todos={todos} updateTaskList ={updateTaskList}/>
+        </MainContext.Provider>
         {/*<Box sx={{ backgroundColor: '#FFFFFF', height:84, maxWidth:1376 }} >*/}
         {/*</Box>*/}
-        <SearchBar tags={tags}  todos={todos} updateTaskList ={updateTaskList} setTodos={setTodos} setTags={setTags} setEnabled={setEnabled}>
-        </SearchBar>
-        <TaskList id="important" todos={todos} updateTaskList ={updateTaskList}/>
+        
 
         {/*<TaskList id="normal" importYn="N" todos={todos} updateTaskList ={updateTaskList}></TaskList>*/}
       </div>
@@ -103,7 +107,8 @@ function SearchTag({tags, todos, updateTaskList}){
       </div>
   );
 }
-function SearchBar({tags, todos, updateTaskList, setTodos, setTags, setEnabled}) {
+function SearchBar({tags, todos, updateTaskList}) {
+  const { setTodos, setTags, setEnabled } = useContext(MainContext);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleChange = (event) => {
@@ -250,7 +255,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
   ]);
   return (
       <div >
-            <DragDropContext
+        <DragDropContext
                 droppableId={importYn}
                 onDragEnd={onDragEnd}
                 onDragStart={onDragStart}
@@ -307,7 +312,6 @@ function TaskList({id, importYn, todos, updateTaskList}) {
               </div>
 
             </DragDropContext>
-
       </div>
 
   );
