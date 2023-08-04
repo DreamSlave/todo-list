@@ -61,6 +61,9 @@ function First() {
         },
       }
     }
+    if(!!category && category !== ''){
+      params.properties.category.select.name = category
+    }
     ApiUtil.post(`${ApiConfig.notionDomain}/v1/pages`, params).then(function (response){
       if(response.status === 200){
         goMain()
