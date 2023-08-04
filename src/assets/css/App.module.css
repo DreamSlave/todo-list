@@ -252,3 +252,15 @@
   margin-bottom: 0;
   text-decoration: none;
 }
+
+
+.input-cate {
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  border: 1px solid #2d9fd9;
+  color: #a0d18c;
+  width: 20%;
+  height: 30px;
+  padding-left: 10px;
+}
