@@ -7,10 +7,11 @@ import HeaderStyles from "../assets/css/Header.module.css";
 import ApiUtil from "../api/api.util";
 import ApiConfig from "../api/api.config";
 import { useNavigate } from "react-router-dom";
+import {Chip} from "@mui/material";
 
 function First() {
   const movePage = useNavigate();
-  const [isActiveCategory, setIsActiveCategory] = useState(true);
+  const [isActiveCategory, setIsActiveCategory] = useState(false);
   const [category, setCategory] = useState('');
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
@@ -98,24 +99,27 @@ function First() {
                             }}
                             placeholder={'비고를 입력해보세요.'}/>
                 </div>
-                <div className={styles['frame3']}>
-                  <div onClick={()=>setIsActiveCategory(true)} className={firstStyles['chip']}>{
-                    !isActiveCategory ? <span className={firstStyles['chip']}> {category}</span>
-                        :(
-                            <span className={'w90 ' + firstStyles['chip']}>
-                              <input value={category}
-                                     placeholder={'카테고리'}
-                                     onChange={(e)=> {
-                                       e.preventDefault();
-                                       setCategory(e.target.value)
-                                     }}
-                                     onBlur={(e)=> setIsActiveCategory(false)}
-                              />
-                            </span>
-                        )
-                  }
-                  </div>
 
+                <div>
+                  {
+                    isActiveCategory ?
+                      <input type="text"
+                             value={category}
+                             className={styles['input-cate']}
+                             onChange={(e) => {
+                               e.preventDefault();
+                               setCategory(e.target.value)
+                             }}
+                             onKeyUp={(e) => {
+                               if((e.keyCode || e.which) === 13) {
+                                 setIsActiveCategory(false)
+                               }
+                             }}
+                             onBlur={(e)=> setIsActiveCategory(false)}
+                      />
+                      :
+                      <Chip label={category} variant="outlined" onClick={() => setIsActiveCategory(true)}/>
+                  }
                 </div>
               </div>
             </Card>
