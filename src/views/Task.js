@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { useContext } from 'react';
+// import { MainContext } from './Main'
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -37,7 +39,9 @@ function Task({ modeProps, taskInfoProps }) {
   const [mode, setMode] = useState(modeProps ?? 'VIEW')
   const [task, setTask] = useState(taskInfoProps)
   const [categoryInputMode, setCategoryInputMode] = useState(false)
+  // const { updateTaskList } = useContext(MainContext)
   
+
   /* React.useEffect(() => {
   }, []) */
 
@@ -145,7 +149,8 @@ function Task({ modeProps, taskInfoProps }) {
       },
     }
     ApiUtil.delete(`${ApiConfig.notionDomain}/v1/blocks/${task.taskId}`, params).then(res => {
-      // TODO: parent component에 noti 해줘야 함
+      // TODO: parent component 함수 호출
+      
     })
   }
 
