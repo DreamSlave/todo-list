@@ -159,7 +159,7 @@ function Task({ modeProps, taskInfoProps }) {
   }
 
   const keyUpCategory = function(e) {
-    
+
     let params = {
       parent : {
         database_id: `${ApiConfig.mainDataBaseId}`
@@ -172,6 +172,11 @@ function Task({ modeProps, taskInfoProps }) {
         },
       }
     }
+
+    if(task.category.trim().length === 0) {
+      params['properties'] = undefined
+    }
+
     ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
       setCategoryInputMode(!categoryInputMode)
     })
@@ -179,7 +184,6 @@ function Task({ modeProps, taskInfoProps }) {
 
   return (
     <Card sx={{ minWidth: 375, height: 260, padding : '15px' , boxSizing : 'border-box' , backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#5490A1' : task.status === '완료' ? '#798380' : '#FFFFFF') }}>
-    {/* <Card sx={{ minWidth: 375, padding : '15px' , boxSizing : 'border-box' , backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#297CA7CC' : task.status === '완료' ? '#0C24267F' : '#FFFFFF') }}> */}
       <CardContent sx={{ height: '160px' , padding : '0px'}}>
         {/* header */}
         <ThemeProvider theme={statusButtonTheme}>
