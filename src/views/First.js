@@ -110,6 +110,7 @@ function First() {
                                e.preventDefault();
                                setCategory(e.target.value)
                              }}
+                             maxLength="10"
                              onKeyUp={(e) => {
                                if((e.keyCode || e.which) === 13) {
                                  setIsActiveCategory(false)
