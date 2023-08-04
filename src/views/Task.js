@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useContext } from 'react';
-// import { MainContext } from './Main'
+import { MainContext } from './Main'
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -39,11 +39,8 @@ function Task({ modeProps, taskInfoProps }) {
   const [mode, setMode] = useState(modeProps ?? 'VIEW')
   const [task, setTask] = useState(taskInfoProps)
   const [categoryInputMode, setCategoryInputMode] = useState(false)
-  // const { updateTaskList } = useContext(MainContext)
+  const { fetchData } = useContext(MainContext)
   
-
-  /* React.useEffect(() => {
-  }, []) */
 
   const statusButtonTheme = createTheme({
     palette: {
@@ -52,11 +49,9 @@ function Task({ modeProps, taskInfoProps }) {
       },
       processing: {
         main: '#5490A1'
-        // main: '#297CA7CC'
       },
       complete: {
         main: '#798380'
-        // main: '#0C24267F'
       }
     },
   })
@@ -137,6 +132,8 @@ function Task({ modeProps, taskInfoProps }) {
       }
       ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
         setMode('VIEW')
+        // parent component 함수 호출
+        fetchData()
       })
     }
   } 
@@ -149,8 +146,8 @@ function Task({ modeProps, taskInfoProps }) {
       },
     }
     ApiUtil.delete(`${ApiConfig.notionDomain}/v1/blocks/${task.taskId}`, params).then(res => {
-      // TODO: parent component 함수 호출
-      
+      // parent component 함수 호출
+      fetchData()
     })
   }
 

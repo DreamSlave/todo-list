@@ -1,15 +1,21 @@
 .add {
-  text-align: center;
+  /* text-align: center;
   width: 36px;
   height: 263px;
   background-color: #FD966B;
   color: #e1581e;
   margin: 22px 10px 0px 22px;
-  border-radius: 7px;
+  border-radius: 7px; */
+  padding-top: 125px;
+  padding-left: 15px;
 }
 .add_icon{
-  display: inline-block;
-  margin-top: 110px;
+  /* display: inline-block;
+  margin-top: 110px; */
+  background-color: #ffffff85;
+  color: chocolate;
+  padding: 10px;
+  border-radius: 50%;
 }
 
 .task_import {
@@ -20,10 +26,14 @@
   width:90%;
   height:304px;
   margin : 10px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 .task_inner{
   white-space: nowrap;
-  /* overflow: auto; */
+  overflow: hidden;
+  overflow-x: auto;
+  padding-right: 30px;
 }
 
 .task {
@@ -34,6 +44,8 @@
   width:90%;
   height:304px;
   margin : 10px;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .card {
