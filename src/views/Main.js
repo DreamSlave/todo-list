@@ -117,7 +117,7 @@ function SearchBar({tags, todos, updateTaskList}) {
   }
 
   return (
-      <Container maxWidth="md" sx={{ m: 5 }}>
+      <Container maxWidth="md"  sx={{margin: 'auto' , marginTop: '45px' }}>
         <TextField
             id="search"
             type="search"
