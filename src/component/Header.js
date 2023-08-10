@@ -14,7 +14,7 @@ function Header() {
         ApiUtil.get(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}`)
             .then(function (response) {
                 if (response.status === 200) {
-                    setHeadLine(response.data.title[0].plain_text)
+                    setHeadLine(response.data.title[0]?.plain_text ?? '')
                 }else {
                     alert("HeadLine read fail.")
                 }
@@ -24,7 +24,10 @@ function Header() {
     function saveHeadLine(targetValue){
         if(headLine !== targetValue){
             let params = {
-                title: [{text: {content: `${targetValue}`}}],
+              title : []
+            }
+            if(targetValue !== ''){
+              params.title = [{text: {content: `${targetValue}`}}]
             }
             ApiUtil.patch(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}`,params)
                 .then(function (response) {
