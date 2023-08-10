@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/css/App.css';
 import ApiUtil from "../api/api.util";
 import ApiConfig from "../api/api.config";
@@ -11,9 +11,12 @@ function MainLayout() {
 
     const movePage = useNavigate();
 
+    const [isExistTask, setIsExistTask] = useState(false);
+
     useEffect(() => {
         ApiUtil.post(`${ApiConfig.notionDomain}/v1/databases/${ApiConfig.mainDataBaseId}/query`).then(function (response) {
             if (response.status === 200) {
+                setIsExistTask(true)
                 if(response.data.results.length > 0){
                     movePage('/main');
                 }else {
@@ -26,12 +29,18 @@ function MainLayout() {
 
     return (
         <div>
-            <div className={'w100'}>
-                <div className={styles['navi']}>
-                    <Header />
-                </div>
-            </div>
-            <Outlet></Outlet>
+            {(()=>{
+                if(isExistTask){
+                    return <div>
+                                <div className={'w100'}>
+                                    <div className={styles['navi']}>
+                                        <Header />
+                                    </div>
+                                </div>
+                                <Outlet></Outlet>
+                            </div>
+                }
+            })()}
         </div>
     );
 }
