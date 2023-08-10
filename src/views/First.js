@@ -8,6 +8,10 @@ import ApiUtil from "../api/api.util";
 import ApiConfig from "../api/api.config";
 import { useNavigate } from "react-router-dom";
 import {Chip} from "@mui/material";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
 
 function First() {
   const movePage = useNavigate();
@@ -16,10 +20,26 @@ function First() {
   const [title, setTitle] = useState('');
   const [contents, setContents] = useState('');
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   function goMain(){
     movePage('/main');
   }
   function saveTask(){
+
+    if(!title && !contents){
+      handleClickOpen()
+      return
+    }
+
     let params = {
       parent : {
         database_id: `${ApiConfig.mainDataBaseId}`
@@ -53,12 +73,7 @@ function First() {
           select: {
             name: `Y`
           }
-        },
-        category : {
-          select: {
-            name: `${category}`
-          }
-        },
+        }
       }
     }
     if(!!category && category !== ''){
@@ -74,6 +89,21 @@ function First() {
   }
   return (
       <div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"할 일 또는 비고를 입력해주세요"}
+          </DialogTitle>
+          <DialogActions>
+            <Button onClick={handleClose} autoFocus>
+              확인
+            </Button>
+          </DialogActions>
+        </Dialog>
         <div>
           <div className={'w50'} style={{ margin :'auto', paddingTop: '10%'}}>
             <span className={'font60 pdb10' + firstStyles['fit']}>첫번째 할 일을 기록해보세요!</span>
@@ -87,6 +117,7 @@ function First() {
                            e.preventDefault();
                            setTitle(e.target.value)
                          }}
+                         maxLength="15"
                          placeholder={'해야할 일을 입력해보세요.'}/>
                 </div>
                 <div className={'pdt10'}>
@@ -97,6 +128,7 @@ function First() {
                               e.preventDefault();
                               setContents(e.target.value)
                             }}
+                            maxLength="300"
                             placeholder={'비고를 입력해보세요.'}/>
                 </div>
 
