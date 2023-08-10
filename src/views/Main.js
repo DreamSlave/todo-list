@@ -82,13 +82,12 @@ function SearchTag({tags, todos, updateTaskList}){
           style={{
             height: '31px',
             padding: '10px',
-            textAlign:'left',
-            marginLeft:'50px'
+            margin: 'auto'
           }}
       >
 
         {tags.map((element, index) =>(
-            <Chip label={element} onClick={() => chipFilter(element)} key={index} clickable />
+            <Chip label={element} style={{marginLeft: '5px' , marginBottom: '5px' , backgroundColor: '#547ec940' , letterSpacing: '-1px'}} onClick={() => chipFilter(element)} key={index} clickable />
           ))}
       </div>
   );
@@ -117,7 +116,7 @@ function SearchBar({tags, todos, updateTaskList}) {
   }
 
   return (
-      <Container maxWidth="md"  sx={{margin: 'auto' , marginTop: '45px' }}>
+      <Container maxWidth="md"  sx={{margin: 'auto' , marginTop: '45px' , marginBottom: '30px' }}>
         <TextField
             id="search"
             type="search"
@@ -134,8 +133,8 @@ function SearchBar({tags, todos, updateTaskList}) {
               ),
             }}
         />
-        <Button variant="Search" onClick={onClickSearch}>검색</Button>
-        <Button variant="Clear" onClick={onClickClear}>초기화</Button>
+        <Button variant="Search" onClick={onClickSearch} style={{backgroundColor: 'cornflowerblue' , color: '#fff' , padding: '12px 0' , marginLeft: '8px' , width: '75px', fontSize: '18px' , fontWeight: '500' ,  letterSpacing: '-1px'}}>검색</Button>
+        <Button variant="Clear" onClick={onClickClear} style={{backgroundColor: '#b8c3d8' , color: '#eee' , padding: '12px 0' , marginLeft: '8px' , width: '75px', fontSize: '18px' , fontWeight: '500' , letterSpacing: '-1px'}}>초기화</Button>
         <SearchTag tags={tags} todos={todos} updateTaskList ={updateTaskList}></SearchTag>
       </Container>
   );
