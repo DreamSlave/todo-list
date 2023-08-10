@@ -225,7 +225,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
       })
   }
 
-  const [importantList, setImportantList] = useState([
+  const [importantList] = useState([
     { id: 0, value: 'Y' },
     { id: 1, value: 'N' },
   ]);
