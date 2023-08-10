@@ -126,11 +126,20 @@ function Task({ modeProps, taskInfoProps }) {
                 }
               }
             ]
-          }
+          },
+          category: {
+            select: {
+              name: task.category,
+            }
+          },
         }
       }
       ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
         setMode('VIEW')
+        if(categoryInputMode) {
+          setCategoryInputMode(!categoryInputMode)
+        }
+
         // parent component 함수 호출
         fetchData()
       })
@@ -160,29 +169,31 @@ function Task({ modeProps, taskInfoProps }) {
 
   const keyUpCategory = function(e) {
 
-    let params = {
-      parent : {
-        database_id: `${ApiConfig.mainDataBaseId}`
-      },
-      properties : {
-        category: {
-          select: {
-            name: task.category,
-          }
+    if(!task.isNew) {
+      let params = {
+        parent : {
+          database_id: `${ApiConfig.mainDataBaseId}`
         },
+        properties : {
+          category: {
+            select: {
+              name: task.category,
+            }
+          },
+        }
       }
+  
+      if(task.category.trim().length === 0) {
+        params['properties'] = undefined
+      }
+  
+      ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
+        setCategoryInputMode(!categoryInputMode)
+  
+        // parent component 함수 호출
+        fetchData()
+      })
     }
-
-    if(task.category.trim().length === 0) {
-      params['properties'] = undefined
-    }
-
-    ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
-      setCategoryInputMode(!categoryInputMode)
-
-      // parent component 함수 호출
-      fetchData()
-    })
   }
 
   return (
@@ -285,6 +296,7 @@ Task.defaultProps = {
   modeProps: 'VIEW',
   taskInfoProps: {
     taskId: '',
+    isNew: false,
     status: '대기',
     title: '',
     registDt: '',

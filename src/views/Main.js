@@ -218,6 +218,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
               let newTaskId = response.data.id
               let findIndex = getUpdateTaskList.findIndex(task=>task.taskId===newTaskId)
               getUpdateTaskList[findIndex].viewMode='EDIT'
+              getUpdateTaskList[findIndex].isNew=true
               updateTaskList(getUpdateTaskList)
           } else {
               alert('저장실패')
