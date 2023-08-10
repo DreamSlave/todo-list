@@ -137,7 +137,7 @@ function Task({ modeProps, taskInfoProps }) {
     }
   } 
 
-  // 진행상태 삭제 함수
+  // 삭제 함수
   const deleteTask = function(e) {
     let params = {
       parent : {
@@ -179,6 +179,9 @@ function Task({ modeProps, taskInfoProps }) {
 
     ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
       setCategoryInputMode(!categoryInputMode)
+
+      // parent component 함수 호출
+      fetchData()
     })
   }
 
