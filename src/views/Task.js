@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Chip } from "@mui/material";
 import TaskEditImg from '../assets/imgs/edit_task.png'
-import TaskDeleteImg from '../assets/imgs/delete_task.png'
+// import TaskDeleteImg from '../assets/imgs/delete_task.png'
 import TaskConfirmImg from '../assets/imgs/confirm_task.png'
 import TaskCancelImg from '../assets/imgs/close_task.png'
 import FireTaskImg from '../assets/imgs/fire_task.png'
@@ -22,7 +22,7 @@ import ApiUtil from "../api/api.util";
 import ApiConfig from "../api/api.config";
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import DeleteIcon from '@mui/icons-material/Delete';
+// import DeleteIcon from '@mui/icons-material/Delete';
 
 /* const bull = (
   <Box
@@ -137,7 +137,7 @@ function Task({ modeProps, taskInfoProps }) {
     }
   } 
 
-  // 진행상태 삭제 함수
+  // 삭제 함수
   const deleteTask = function(e) {
     let params = {
       parent : {
@@ -179,6 +179,9 @@ function Task({ modeProps, taskInfoProps }) {
 
     ApiUtil.patch(`${ApiConfig.notionDomain}/v1/pages/${task.taskId}`, params).then(res => {
       setCategoryInputMode(!categoryInputMode)
+
+      // parent component 함수 호출
+      fetchData()
     })
   }
 
@@ -210,7 +213,8 @@ function Task({ modeProps, taskInfoProps }) {
               </Box> :
               <Box>
                 <IconButton aria-label="edit" onClick={changeMode}>
-                  <img  src={TaskConfirmImg}
+                  <img  alt=""
+                        src={TaskConfirmImg}
                         className={styles['ellipse91']}
                   />
                 </IconButton>
