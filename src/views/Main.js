@@ -43,7 +43,7 @@ function Main() {
 
   async function fetchData() {
     const result = await getTaskList()
-    setTodos( result)
+    setTodos(result)
     let filterTags = result.map(item => item.category).filter(categoryStr => !!categoryStr && categoryStr!=='')
     setTags( [...new Set(filterTags)] )
     setEnabled(true);
@@ -65,17 +65,18 @@ function Main() {
   return (
       <div style={{textAlign: 'center', width : '100%' }}>
         <MainContext.Provider value={{fetchData}}>
-          <SearchBar tags={tags}  todos={todos} updateTaskList ={updateTaskList} >
+          <SearchBar tags={tags} updateTaskList ={updateTaskList} >
           </SearchBar>
           <TaskList id="important" todos={todos} updateTaskList ={updateTaskList}/>
         </MainContext.Provider>
       </div>
   );
 }
-function SearchTag({tags, todos, updateTaskList}){
-  function chipFilter(item){
-    const result = todos.filter(todo => todo.category === item)
-    updateTaskList(result)
+function SearchTag({tags, updateTaskList}){
+  async function chipFilter(item){
+    const result = await getTaskList()
+    updateTaskList(result.filter(todo => todo.category === item))
+    
   }
   return (
       <div
