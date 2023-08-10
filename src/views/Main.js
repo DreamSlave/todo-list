@@ -5,12 +5,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from '@mui/icons-material/Add';
 import MainStyles from "../assets/css/Main.module.css";
 import Task from "./Task"
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
 import ApiUtil from "../api/api.util";
 import ApiConfig from "../api/api.config";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
@@ -150,19 +144,14 @@ function SearchBar({tags, todos, updateTaskList}) {
 
 function TaskList({id, importYn, todos, updateTaskList}) {
   const { fetchData } = useContext(MainContext);
-  const [task, setTask] = useState({})
   const onDragEnd = (result) => {
     if (!result.destination) return;
-    console.log("::result::",result)
     let newTodoList = [...todos]
-    // 드래그 결과
     // source : 원본
     // destination : 변경
     const { destination, source } = result;
 
-    const sourceData = todos[source.index];
     if(source.droppableId !== destination.droppableId){
-      //import 넘기는 로직 추가
       let params = {
         parent : {
           database_id: `${ApiConfig.mainDataBaseId}`
@@ -185,11 +174,6 @@ function TaskList({id, importYn, todos, updateTaskList}) {
     }
 
     updateTaskList(newTodoList)
-
-  }
-  const onDragStart = () => {
-    //드래그 시작하면 할일
-    //console.log("::onDragStart::")
   }
   function saveTask(importYn){
       let params = {
@@ -241,7 +225,7 @@ function TaskList({id, importYn, todos, updateTaskList}) {
       })
   }
 
-  const [importantList, seImportantList] = useState([
+  const [importantList, setImportantList] = useState([
     { id: 0, value: 'Y' },
     { id: 1, value: 'N' },
   ]);
@@ -250,7 +234,6 @@ function TaskList({id, importYn, todos, updateTaskList}) {
         <DragDropContext
                 droppableId={importYn}
                 onDragEnd={onDragEnd}
-                onDragStart={onDragStart}
             >
               <div style={{width : '100%'}}>
                 <Droppable droppableId="important" type="droppableItem">
@@ -282,7 +265,6 @@ function TaskList({id, importYn, todos, updateTaskList}) {
                                                           modeProps={item.viewMode}
                                                           taskInfoProps={item}
                                                       />}
-                                                      {item.taskIndex}
                                                     </span>
                                                 }
                                               </Draggable>
