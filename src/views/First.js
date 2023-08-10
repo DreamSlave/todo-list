@@ -72,9 +72,6 @@ function First() {
       }
     })
   }
-  function getLog() {
-    console.log("Hi there, user!");
-  }
   return (
       <div>
         <div>
