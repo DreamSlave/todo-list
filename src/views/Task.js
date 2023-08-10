@@ -242,17 +242,17 @@ function Task({ modeProps, taskInfoProps }) {
 
         {/* body */}
         <ThemeProvider theme={bodyTheme}>
-        <Typography sx={{ textAlign: 'left' , fontWeight:'600' , letterSpacing:'-1.5px' , marginTop: '5px' , fontSize: '1.3rem' }} variant="h5" component="div">
+        <Typography variant="h5" component="div" sx={{ textAlign: 'left' , fontWeight:'600' , letterSpacing:'-1.5px' , marginTop: '5px' , fontSize: '1.3rem' , height: '30px'}}>
             {/* be{bull}nev{bull}o{bull}lent */}
             {mode === 'VIEW' ?
                 task.title :
-                <input type="text" value={task.title} onChange={(e) => changeTask(e, 'title')} />    
+                <input type="text" value={task.title} onChange={(e) => changeTask(e, 'title')} style={{height: '30px' , padding:'0' , textAlign: 'left' , fontWeight:'600' , letterSpacing:'-1.5px' , fontSize: '1.3rem' }}/>    
             }
           </Typography>
-          <Typography sx={{ textAlign: 'left', overflow: 'hidden', overflowY: 'auto', height: '55%' , fontSize:'14px' , wordBreak: 'break-all' , maxWidth: '340px' }} variant="body3" component="div">
+          <Typography variant="body3" component="div" sx={{ textAlign: 'left', overflow: 'hidden', overflowY: 'auto', height: '55%' , fontSize:'14px' , wordBreak: 'break-all' , maxWidth: '340px' , marginTop: '3px' }}>
             {mode === 'VIEW' ?
                 task.contents :
-                <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} />
+                <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} style={{padding: '0' , width: '100%', height: '95%', border: 'none', background: '#ffffff5e', borderBottom: '1px #999 solid' , resize:'none' }}/>
               }
             <br />
           </Typography>
@@ -260,7 +260,7 @@ function Task({ modeProps, taskInfoProps }) {
       </CardContent>
 
       {/* bottom */}
-      <CardActions>
+      <CardActions sx={{marginTop: '20px' , padding: '0'}}>
         {task.importYn === 'Y' && 
           <img
               alt="Ellipse83218"
