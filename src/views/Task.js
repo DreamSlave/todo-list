@@ -99,8 +99,18 @@ function Task({ modeProps, taskInfoProps }) {
     } else {
 
       if(e.target.parentElement.ariaLabel === 'cancel') {
-        setMode('VIEW')
-        return
+        if(isEmptyTask()) {
+          // 입력한 값이 하나도 없다면 삭제
+          deleteTask()
+        } else {
+          setMode('VIEW')
+          return
+        }
+      } else {
+        if(isEmptyTask()) {
+          alert('입력된 내용이 없습니다.')
+          return false
+        }
       }
 
       let params = {
@@ -195,6 +205,12 @@ function Task({ modeProps, taskInfoProps }) {
       })
     }
   }
+
+  // 입력된 task 데이터 존재여부
+  const isEmptyTask = function() {
+    return task.title.trim() === '' && task.contents.trim() === '' && task.category.trim() === ''
+  }
+
 
   return (
     <Card sx={{ minWidth: 375, height: 260, padding : '15px' , boxSizing : 'border-box' , backgroundColor: (task.status === '대기' ? '#F5E8C0' : task.status === '진행' ? '#5490A1' : task.status === '완료' ? '#798380' : '#FFFFFF') }}>
