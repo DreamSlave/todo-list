@@ -226,11 +226,10 @@ function Task({ modeProps, taskInfoProps }) {
           <Stack direction="row" spacing={0} sx={{ width: 'auto' }} justifyContent="flex-end">
             {mode === 'VIEW' ?
               <Box>
-                <IconButton aria-label="edit" onClick={changeMode}>
-                  <img  alt="Ellipse73218"
-                        src={TaskEditImg}
-                        className={styles['ellipse91']}
-                  />
+                <IconButton aria-label="edit" onClick={changeMode}>      
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={"1"} width="25px" color="#333" stroke="currentColor" className={'w-6 h-6'}>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                  </svg>
                 </IconButton>
                 <IconButton aria-label="delete" onClick={deleteTask}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={"1"} width="25px" color="#333" stroke="currentColor" className={'w-6 h-6'}>
@@ -240,16 +239,14 @@ function Task({ modeProps, taskInfoProps }) {
               </Box> :
               <Box>
                 <IconButton aria-label="edit" onClick={changeMode}>
-                  <img  alt=""
-                        src={TaskConfirmImg}
-                        className={styles['ellipse91']}
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={"1"} width="25px" color="#333" stroke="currentColor" className={'w-6 h-6'}>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
                 </IconButton>
                 <IconButton aria-label="cancel" onClick={changeMode}>
-                  <img  alt="Ellipse83218"
-                        src={TaskCancelImg}
-                        className={styles['ellipse91']}
-                  />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={"1"} width="25px" color="#333" stroke="currentColor" className={'w-6 h-6'}>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
                 </IconButton>
               </Box>
             }
@@ -258,17 +255,17 @@ function Task({ modeProps, taskInfoProps }) {
 
         {/* body */}
         <ThemeProvider theme={bodyTheme}>
-        <Typography sx={{ textAlign: 'left' , fontWeight:'600' , letterSpacing:'-1.5px' , marginTop: '5px' , fontSize: '1.3rem' }} variant="h5" component="div">
+        <Typography variant="h5" component="div" sx={{ textAlign: 'left' , fontWeight:'500' , letterSpacing:'-1.5px' , marginTop: '5px' , fontSize: '1.3rem' , height: '30px'}}>
             {/* be{bull}nev{bull}o{bull}lent */}
             {mode === 'VIEW' ?
                 task.title :
-                <input type="text" value={task.title} onChange={(e) => changeTask(e, 'title')} />    
+                <input type="text" placeholder='제목을 입력하세요.' value={task.title} onChange={(e) => changeTask(e, 'title')} style={{height: '30px' , padding:'0' , textAlign: 'left' , fontWeight:'600' , letterSpacing:'-1.5px' , fontSize: '1.3rem' }}/>    
             }
           </Typography>
-          <Typography sx={{ textAlign: 'left', overflow: 'hidden', overflowY: 'auto', height: '55%' , fontSize:'14px' , wordBreak: 'break-all' , maxWidth: '340px' }} variant="body3" component="div">
+          <Typography variant="body3" component="div" sx={{ textAlign: 'left', overflow: 'hidden', overflowY: 'auto', height: '55%' , fontSize:'14px' , wordBreak: 'break-all' , maxWidth: '340px' , marginTop: '3px' }}>
             {mode === 'VIEW' ?
                 task.contents :
-                <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} />
+                <textarea defaultValue={task.contents} onChange={(e) => changeTask(e, 'contents')} style={{padding: '0' , width: '100%', height: '95%', border: 'none', background: '#ffffff5e', borderBottom: '1px #999 solid' , resize:'none' }}/>
               }
             <br />
           </Typography>
@@ -276,7 +273,7 @@ function Task({ modeProps, taskInfoProps }) {
       </CardContent>
 
       {/* bottom */}
-      <CardActions>
+      <CardActions sx={{marginTop: '20px' , padding: '0'}}>
         {task.importYn === 'Y' && 
           <img
               alt="Ellipse83218"
